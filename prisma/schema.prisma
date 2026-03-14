@@ -485,6 +485,10 @@ model Settings {
   whatsappNumber    String @default("5511999999999")
   whatsappMessage   String @default("Olá! Gostaria de finalizar meu pedido 💚") @db.Text
 
+  // Pagamento PIX
+  pixKey            String?
+  pixName           String? // Nome do titular da conta
+
   // OpenAI (Nano Banana Pro)
   openaiApiKey      String?
 }

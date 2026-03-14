@@ -20,6 +20,8 @@ export async function getAppConfig() {
         shippingInfo: 'Frete fixo para todo o Brasil. Consulte condições.',
         whatsappNumber: '5511999999999',
         whatsappMessage: 'Olá! Gostaria de finalizar meu pedido 💚',
+        pixKey: '',
+        pixName: '',
         deliveryOptions: [
           { id: 'sedex', name: 'SEDEX', price: 25, time: '3-5 dias úteis' },
           { id: 'jadlog', name: 'Jadlog', price: 18, time: '5-8 dias úteis' }
@@ -35,6 +37,7 @@ export async function getAppConfig() {
         { id: 'jadlog', name: 'Jadlog', price: 18, time: '5-8 dias úteis' }
       ]
     }
+
   } catch (error) {
     console.error('[CONFIG] Erro ao buscar configurações:', error)
     return null

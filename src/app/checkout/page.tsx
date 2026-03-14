@@ -25,6 +25,7 @@ export default function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [selectedShipping, setSelectedShipping] = useState('sedex');
+  const [paymentMethod, setPaymentMethod] = useState('pix');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -68,7 +69,8 @@ export default function CheckoutPage() {
 
       if (result.success) {
         // Enviar para WhatsApp
-        const whatsappMsg = `Olá Laura! Gostaria de finalizar meu pedido no Atelier:%0A%0A*Pedido:* %23${result.order.id.slice(-8)}%0A*Cliente:* ${formData.name}%0A*Entrega:* ${currentShipping.name} (R$ ${currentShipping.price})%0A*Total:* R$ ${finalTotal.toLocaleString('pt-BR')}%0A%0A*Itens:*%0A${items.map(i => `- ${i.quantity}x ${i.productName} (${i.variantModel})`).join('%0A')}%0A%0A*Endereço:* ${formData.address}`;
+        const paymentText = paymentMethod === 'pix' ? 'PIX' : 'Link de Cartão';
+        const whatsappMsg = `Olá Laura! Gostaria de finalizar meu pedido no Atelier:%0A%0A*Pedido:* %23${result.order.id.slice(-8)}%0A*Cliente:* ${formData.name}%0A*Entrega:* ${currentShipping.name} (R$ ${currentShipping.price})%0A*Pagamento:* ${paymentText}%0A*Total:* R$ ${finalTotal.toLocaleString('pt-BR')}%0A%0A*Itens:*%0A${items.map(i => `- ${i.quantity}x ${i.productName} (${i.variantModel})`).join('%0A')}%0A%0A*Endereço:* ${formData.address}`;
         
         const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '5524992982442';
         
@@ -250,6 +252,73 @@ export default function CheckoutPage() {
                          </div>
                       </div>
                    </div>
+
+                   {/* Payment Method */}
+                   <div className="titan-card p-10">
+                      <div className="flex items-center gap-4 mb-8">
+                         <div className="w-10 h-10 bg-[#304930]/5 rounded-xl flex items-center justify-center text-[#304930]">
+                            <CreditCard className="w-5 h-5" />
+                         </div>
+                         <h2 className="text-lg font-serif uppercase tracking-widest text-[#304930]">Pagamento</h2>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                         <div 
+                           onClick={() => setPaymentMethod('pix')}
+                           className={cn(
+                             "p-6 rounded-2xl border-2 transition-all cursor-pointer flex flex-col gap-2 group",
+                             paymentMethod === 'pix' 
+                               ? "border-[#304930] bg-[#304930]/5" 
+                               : "border-black/5 bg-white hover:border-[#304930]/20"
+                           )}
+                         >
+                            <div className="flex justify-between items-center">
+                               <p className="text-xs font-black text-[#304930] uppercase tracking-widest">PIX</p>
+                               <div className={cn(
+                                 "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all",
+                                 paymentMethod === 'pix' ? "border-[#304930]" : "border-slate-200"
+                               )}>
+                                  {paymentMethod === 'pix' && <div className="w-2.5 h-2.5 bg-[#304930] rounded-full" />}
+                               </div>
+                            </div>
+                            <p className="text-[10px] text-slate-400 font-medium">Aprovação instantânea</p>
+                         </div>
+
+                         <div 
+                           onClick={() => setPaymentMethod('card')}
+                           className={cn(
+                             "p-6 rounded-2xl border-2 transition-all cursor-pointer flex flex-col gap-2 group",
+                             paymentMethod === 'card' 
+                               ? "border-[#304930] bg-[#304930]/5" 
+                               : "border-black/5 bg-white hover:border-[#304930]/20"
+                           )}
+                         >
+                            <div className="flex justify-between items-center">
+                               <p className="text-xs font-black text-[#304930] uppercase tracking-widest">Cartão de Crédito</p>
+                               <div className={cn(
+                                 "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all",
+                                 paymentMethod === 'card' ? "border-[#304930]" : "border-slate-200"
+                               )}>
+                                  {paymentMethod === 'card' && <div className="w-2.5 h-2.5 bg-[#304930] rounded-full" />}
+                               </div>
+                            </div>
+                            <p className="text-[10px] text-slate-400 font-medium">Link de pagamento via WhatsApp</p>
+                         </div>
+                      </div>
+
+                      {paymentMethod === 'pix' && (
+                        <div className="mt-8 p-6 rounded-2xl bg-emerald-50/50 border border-emerald-100/50 flex gap-4 items-center">
+                           <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm border border-emerald-100">
+                              <Sparkles className="w-6 h-6 text-emerald-600" />
+                           </div>
+                           <div>
+                              <p className="text-xs font-bold text-emerald-900">Pagamento via PIX</p>
+                              <p className="text-[10px] text-emerald-700/70">A chave PIX será informada pela Laura no WhatsApp após a confirmação do pedido.</p>
+                           </div>
+                        </div>
+                      )}
+                   </div>
+
 
                    {/* Payment Info */}
                    <div className="titan-card p-10 bg-[#304930] text-white">
