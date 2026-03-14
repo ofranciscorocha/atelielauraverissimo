@@ -23,6 +23,7 @@ export default function CheckoutPage() {
   const { items, total, subtotal, shippingFee, clearCart } = useCart();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -51,8 +52,8 @@ export default function CheckoutPage() {
           quantity: item.quantity,
           unitPrice: item.unitPrice,
         })),
+        shippingFee: shippingFee,
         total: total,
-        paymentMethod: 'WHATSAPP', // Or specify another
       };
 
       const result = await createOrder(orderData);
@@ -61,11 +62,15 @@ export default function CheckoutPage() {
         // Enviar para WhatsApp
         const whatsappMsg = `Olá Laura! Gostaria de finalizar meu pedido no Atelier:%0A%0A*Pedido:* %23${result.order.id.slice(-8)}%0A*Cliente:* ${formData.name}%0A*Total:* R$ ${total.toLocaleString('pt-BR')}%0A%0A*Itens:*%0A${items.map(i => `- ${i.quantity}x ${i.productName} (${i.variantModel})`).join('%0A')}%0A%0A*Endereço:* ${formData.address}`;
         
-        const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '5521999999999';
+        const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '5524992982442';
         
         clearCart();
-        window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMsg}`, '_blank');
-        router.push('/');
+        setIsSuccess(true);
+        
+        // Abrir WhatsApp em nova aba
+        setTimeout(() => {
+          window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMsg}`, '_blank');
+        }, 1000);
       }
     } catch (error) {
        console.error('[CHECKOUT] Erro:', error);
@@ -73,6 +78,46 @@ export default function CheckoutPage() {
        setIsSubmitting(false);
     }
   };
+
+  if (isSuccess) {
+    return (
+      <main className="min-h-screen bg-[#F8FAF8] flex items-center justify-center p-6">
+        <Navbar />
+        <div className="max-w-xl w-full titan-card p-12 text-center space-y-8 animate-in fade-in zoom-in duration-700">
+           <div className="w-24 h-24 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-100">
+              <Sparkles className="w-12 h-12 text-emerald-600" />
+           </div>
+           <h2 className="text-4xl font-serif text-[#304930]">Recebemos seu pedido com carinho!</h2>
+           <p className="text-slate-600 leading-relaxed">
+             Obrigado, <span className="font-bold text-[#304930]">{formData.name}</span>. <br />
+             Seu pedido foi registrado em nosso sistema e a conversa no WhatsApp foi iniciada. 
+             Entraremos em contato em breve para alinhar os detalhes finais e a produção da sua arte exclusiva.
+           </p>
+           
+           <div className="pt-8 grid gap-4">
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Próximos Passos</p>
+              <div className="flex flex-col gap-3">
+                 <div className="flex items-center gap-4 bg-emerald-50/50 p-4 rounded-2xl text-left border border-emerald-100/50">
+                    <MessageCircle className="w-5 h-5 text-emerald-600" />
+                    <p className="text-xs font-medium text-emerald-900">Finalizar o pagamento via WhatsApp</p>
+                 </div>
+                 <div className="flex items-center gap-4 bg-emerald-50/50 p-4 rounded-2xl text-left border border-emerald-100/50">
+                    <Sparkles className="w-5 h-5 text-emerald-600" />
+                    <p className="text-xs font-medium text-emerald-900">Aguardar o início da pintura artesanal</p>
+                 </div>
+              </div>
+           </div>
+
+           <Link 
+             href="/" 
+             className="inline-block w-full py-6 rounded-[2rem] bg-[#304930] text-white font-black text-[10px] uppercase tracking-widest hover:bg-[#304930]/90 transition-all shadow-xl shadow-[#304930]/20"
+           >
+             Voltar para o Início
+           </Link>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-[#F8FAF8] pb-20">
