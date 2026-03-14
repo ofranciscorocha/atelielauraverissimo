@@ -83,15 +83,7 @@ export default function CheckoutPage() {
 
   const handleCreateOrder = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (items.length === 0) {
-      alert('Seu carrinho está vazio!');
-      return;
-    }
-
-    if (!currentShipping) {
-      alert('Por favor, calcule o frete antes de continuar');
-      return;
-    }
+    if (items.length === 0) return;
 
     setIsSubmitting(true);
     try {
@@ -116,14 +108,14 @@ export default function CheckoutPage() {
 
       if (result.success) {
         // Enviar para WhatsApp
-        const paymentText = paymentMethod === 'pix' ? 'PIX' : paymentMethod === 'card' ? 'Cartão de Crédito (Link de Pagamento)' : 'Boleto';
-        const whatsappMsg = `Olá Laura! 💚 Gostaria de finalizar meu pedido no Ateliê:%0A%0A*Pedido:* #${result.order.id.slice(-8)}%0A*Cliente:* ${formData.name}%0A*WhatsApp:* ${formData.phone}%0A*CEP:* ${cep}%0A*Entrega:* ${currentShipping.name} (${currentShipping.deliveryTime})%0A*Valor do Frete:* R$ ${currentShipping.price.toFixed(2)}%0A*Pagamento:* ${paymentText}%0A*Total:* R$ ${finalTotal.toFixed(2)}%0A%0A*Itens do Pedido:*%0A${items.map(i => `• ${i.quantity}x ${i.productName} (${i.variantModel})`).join('%0A')}%0A%0A*Endereço Completo:*%0A${formData.address}${formData.observation ? `%0A%0A*Observações da Arte:*%0A${formData.observation}` : ''}%0A%0AAguardo o retorno para confirmar o pagamento! ✨`;
-
+        const paymentText = paymentMethod === 'pix' ? 'PIX' : 'Link de Cartão';
+        const whatsappMsg = `Olá Laura! Gostaria de finalizar meu pedido no Atelier:%0A%0A*Pedido:* %23${result.order.id.slice(-8)}%0A*Cliente:* ${formData.name}%0A*Entrega:* ${currentShipping.name} (R$ ${currentShipping.price})%0A*Pagamento:* ${paymentText}%0A*Total:* R$ ${finalTotal.toLocaleString('pt-BR')}%0A%0A*Itens:*%0A${items.map(i => `- ${i.quantity}x ${i.productName} (${i.variantModel})`).join('%0A')}%0A%0A*Endereço:* ${formData.address}`;
+        
         const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '5524992982442';
-
+        
         clearCart();
         setIsSuccess(true);
-
+        
         // Abrir WhatsApp em nova aba
         setTimeout(() => {
           window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMsg}`, '_blank');
@@ -131,7 +123,6 @@ export default function CheckoutPage() {
       }
     } catch (error) {
        console.error('[CHECKOUT] Erro:', error);
-       alert('Erro ao criar pedido. Tente novamente.');
     } finally {
        setIsSubmitting(false);
     }

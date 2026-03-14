@@ -29,3 +29,5 @@ export * from './products.actions'
 // System Config
 export * from './config.actions'
 
+// Shipping (Melhor Envio)
+export * from './shipping.actions'
