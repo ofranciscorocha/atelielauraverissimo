@@ -15,7 +15,13 @@ import { reserveStockForOrder } from './inventory.actions'
 // ========================================
 
 export interface CreateOrderData {
-  clientId: string
+  clientId?: string
+  clientData?: {
+    name: string
+    email: string
+    phone: string
+    address?: string
+  }
   items: Array<{
     productId: string
     variantId: string
@@ -63,7 +69,41 @@ export interface OrderWithDetails {
 
 export async function createOrder(data: CreateOrderData) {
   try {
-    const { clientId, items, shippingFee, specialMessage, internalNotes, estimatedProductionDays } = data
+    const { clientId, clientData, items, shippingFee, specialMessage, internalNotes, estimatedProductionDays } = data
+
+    let finalClientId = clientId
+
+    // Se passou dados do cliente em vez de ID, cria ou busca o cliente
+    if (!finalClientId && clientData) {
+      const existingClient = await prisma.client.findFirst({
+        where: { 
+          OR: [
+            { email: clientData.email },
+            { phone: clientData.phone }
+          ]
+        }
+      })
+
+      if (existingClient) {
+        finalClientId = existingClient.id
+      } else {
+        const newClient = await prisma.client.create({
+          data: {
+            name: clientData.name,
+            email: clientData.email,
+            phone: clientData.phone,
+            address: clientData.address,
+            ranking: 'NOVO',
+            segment: 'POTENCIAL'
+          }
+        })
+        finalClientId = newClient.id
+      }
+    }
+
+    if (!finalClientId) {
+      return { success: false, error: 'Cliente não identificado' }
+    }
 
     // Calcular subtotal
     const subtotal = items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0)
@@ -77,7 +117,7 @@ export async function createOrder(data: CreateOrderData) {
     // Criar pedido
     const order = await prisma.order.create({
       data: {
-        clientId,
+        clientId: finalClientId,
         status: 'AGUARDANDO_PAGAMENTO',
         productionStatus: 'NAO_INICIADO',
         subtotal,
