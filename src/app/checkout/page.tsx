@@ -54,7 +54,7 @@ export default function CheckoutPage() {
       const result = await calculateShipping(cep, items.length);
 
       if (result.success && result.options) {
-        const formatted = result.options.map((opt: any) => formatShippingOption(opt));
+        const formatted = await Promise.all(result.options.map((opt: any) => formatShippingOption(opt)));
         setShippingOptions(formatted);
         if (formatted.length > 0) {
           setSelectedShipping(formatted[0].id);

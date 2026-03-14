@@ -168,13 +168,13 @@ export async function calculateShipping(
 // FORMATAR OPÇÃO DE FRETE PARA DISPLAY
 // ========================================
 
-export function formatShippingOption(option: ShippingOption): {
+export async function formatShippingOption(option: ShippingOption): Promise<{
   id: string
   name: string
   price: number
   deliveryTime: string
   company: string
-} {
+}> {
   return {
     id: option.id.toString(),
     name: option.name,
