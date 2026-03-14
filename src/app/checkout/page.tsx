@@ -20,10 +20,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 export default function CheckoutPage() {
-  const { items, total, subtotal, shippingFee, clearCart } = useCart();
+  const { items, total, subtotal, clearCart } = useCart();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [selectedShipping, setSelectedShipping] = useState('sedex');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -32,13 +33,20 @@ export default function CheckoutPage() {
     observation: ''
   });
 
+  const shippingOptions = [
+    { id: 'sedex', name: 'SEDEX', price: 25, time: '3-5 dias úteis' },
+    { id: 'jadlog', name: 'Jadlog', price: 18, time: '5-8 dias úteis' }
+  ];
+
+  const currentShipping = shippingOptions.find(opt => opt.id === selectedShipping) || shippingOptions[0];
+  const finalTotal = subtotal + currentShipping.price;
+
   const handleCreateOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (items.length === 0) return;
 
     setIsSubmitting(true);
     try {
-      // Simplificado: criaremos um cliente (ou buscaremos) e o pedido
       const orderData = {
         clientData: {
           name: formData.name,
@@ -52,15 +60,15 @@ export default function CheckoutPage() {
           quantity: item.quantity,
           unitPrice: item.unitPrice,
         })),
-        shippingFee: shippingFee,
-        total: total,
+        shippingFee: currentShipping.price,
+        total: finalTotal,
       };
 
       const result = await createOrder(orderData);
 
       if (result.success) {
         // Enviar para WhatsApp
-        const whatsappMsg = `Olá Laura! Gostaria de finalizar meu pedido no Atelier:%0A%0A*Pedido:* %23${result.order.id.slice(-8)}%0A*Cliente:* ${formData.name}%0A*Total:* R$ ${total.toLocaleString('pt-BR')}%0A%0A*Itens:*%0A${items.map(i => `- ${i.quantity}x ${i.productName} (${i.variantModel})`).join('%0A')}%0A%0A*Endereço:* ${formData.address}`;
+        const whatsappMsg = `Olá Laura! Gostaria de finalizar meu pedido no Atelier:%0A%0A*Pedido:* %23${result.order.id.slice(-8)}%0A*Cliente:* ${formData.name}%0A*Entrega:* ${currentShipping.name} (R$ ${currentShipping.price})%0A*Total:* R$ ${finalTotal.toLocaleString('pt-BR')}%0A%0A*Itens:*%0A${items.map(i => `- ${i.quantity}x ${i.productName} (${i.variantModel})`).join('%0A')}%0A%0A*Endereço:* ${formData.address}`;
         
         const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '5524992982442';
         
@@ -78,6 +86,7 @@ export default function CheckoutPage() {
        setIsSubmitting(false);
     }
   };
+
 
   if (isSuccess) {
     return (
@@ -176,107 +185,140 @@ export default function CheckoutPage() {
                   </div>
 
                   {/* Delivery */}
-                  <div className="titan-card p-10">
-                     <div className="flex items-center gap-4 mb-8">
-                        <div className="w-10 h-10 bg-[#304930]/5 rounded-xl flex items-center justify-center text-[#304930]">
-                           <MapPin className="w-5 h-5" />
-                        </div>
-                        <h2 className="text-lg font-serif uppercase tracking-widest text-[#304930]">Entrega</h2>
-                     </div>
-
-                     <div className="space-y-6">
-                        <div className="space-y-2">
-                           <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Endereço Completo</label>
-                           <textarea 
-                             required
-                             value={formData.address}
-                             onChange={(e) => setFormData({...formData, address: e.target.value})}
-                             rows={3}
-                             placeholder="Rua, número, bairro, cidade e CEP..." 
-                             className="w-full bg-[#F8FAF8] border border-black/5 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#304930]/20 transition-all font-medium resize-none"
-                           />
-                        </div>
-                        <div className="space-y-2">
-                           <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Observações da Arte</label>
-                           <textarea 
-                             value={formData.observation}
-                             onChange={(e) => setFormData({...formData, observation: e.target.value})}
-                             rows={2}
-                             placeholder="Algum detalhe especial para a pintura?" 
-                             className="w-full bg-[#F8FAF8] border border-black/5 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#304930]/20 transition-all font-medium resize-none outline-dashed outline-1 outline-black/5"
-                           />
-                        </div>
-                     </div>
-                  </div>
-
-                  {/* Payment Info */}
-                  <div className="titan-card p-10 bg-[#304930] text-white">
-                     <div className="flex items-center gap-4 mb-8">
-                        <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center">
-                           <CreditCard className="w-5 h-5 text-emerald-400" />
-                        </div>
-                        <h2 className="text-lg font-serif uppercase tracking-widest text-emerald-100">Pagamento & Conclusão</h2>
-                     </div>
-                     <p className="text-sm text-emerald-100/60 leading-relaxed mb-10">
-                        Seu pedido será enviado para o WhatsApp de Laura Verissimo. Lá você poderá combinar a forma de pagamento (Pix ou Link de Cartão) e tirar dúvidas sobre a personalização.
-                     </p>
-                     
-                     <button 
-                       type="submit"
-                       disabled={isSubmitting || items.length === 0}
-                       className={cn(
-                        "w-full py-8 rounded-[2.5rem] bg-white text-[#304930] font-black text-xs uppercase tracking-[0.4em] shadow-2xl flex items-center justify-center gap-4 transition-all",
-                        isSubmitting ? "opacity-70" : "hover:bg-emerald-50 hover:scale-[1.02] active:scale-95"
-                       )}
-                     >
-                        {isSubmitting ? 'Gerando Pedido...' : 'Finalizar via WhatsApp'}
-                        <MessageCircle className="w-6 h-6 text-emerald-600" />
-                     </button>
-                  </div>
-               </form>
-
-               {/* Cart Summary (Review) */}
-               <div className="col-span-12 lg:col-span-5">
-                  <div className="titan-card h-fit overflow-hidden border-black/5">
-                     <div className="p-8 bg-[#F8FAF8] border-b border-black/5">
-                        <h3 className="text-sm font-black uppercase tracking-widest text-[#304930]">Resumo da Compra</h3>
-                     </div>
-                     
-                     <div className="p-8 space-y-6 max-h-[400px] overflow-y-auto no-scrollbar">
-                        {items.map((item) => (
-                           <div key={item.variantId} className="flex gap-4">
-                              <div className="w-16 h-16 bg-[#304930]/5 rounded-2xl flex-shrink-0 flex items-center justify-center border border-black/5">
-                                 <ShoppingBag className="w-6 h-6 text-[#304930]/10" />
-                              </div>
-                              <div className="flex-1">
-                                 <p className="text-xs font-bold text-[#304930] line-clamp-1">{item.productName}</p>
-                                 <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">{item.quantity}x • {item.variantModel}</p>
-                                 <p className="text-xs font-black text-[#304930]/60 mt-1">R$ {item.subtotal.toLocaleString('pt-BR')}</p>
-                              </div>
-                           </div>
-                        ))}
-                     </div>
-
-                     <div className="p-8 bg-[#F8FAF8] border-t border-black/5 space-y-4">
-                        <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-400">
-                           <span>Subtotal</span>
-                           <span>R$ {subtotal.toLocaleString('pt-BR')}</span>
-                        </div>
-                        <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-400">
-                           <span>Entrega Estimada</span>
-                           <span>R$ {shippingFee.toLocaleString('pt-BR')}</span>
-                        </div>
-                        <div className="flex justify-between items-center text-xl font-black tracking-tighter text-[#304930] pt-2">
-                           <span>Total</span>
-                           <span className="text-[#D4AF37]">R$ {total.toLocaleString('pt-BR')}</span>
-                        </div>
-                     </div>
-
-                     <div className="p-8 flex flex-col items-center gap-6">
-                         <div className="flex items-center gap-2">
-                            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                            <p className="text-[9px] font-black uppercase tracking-widest text-[#304930]">Checkout Seguro</p>
+                   <div className="titan-card p-10">
+                      <div className="flex items-center gap-4 mb-8">
+                         <div className="w-10 h-10 bg-[#304930]/5 rounded-xl flex items-center justify-center text-[#304930]">
+                            <MapPin className="w-5 h-5" />
                          </div>
+                         <h2 className="text-lg font-serif uppercase tracking-widest text-[#304930]">Entrega</h2>
+                      </div>
+
+                      <div className="space-y-8">
+                         <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Endereço Completo</label>
+                            <textarea 
+                              required
+                              value={formData.address}
+                              onChange={(e) => setFormData({...formData, address: e.target.value})}
+                              rows={3}
+                              placeholder="Rua, número, bairro, cidade e CEP..." 
+                              className="w-full bg-[#F8FAF8] border border-black/5 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#304930]/20 transition-all font-medium resize-none"
+                            />
+                         </div>
+
+                         <div className="space-y-4">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Forma de Envio</label>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                               {shippingOptions.map((option) => (
+                                 <div 
+                                   key={option.id}
+                                   onClick={() => setSelectedShipping(option.id)}
+                                   className={cn(
+                                     "p-6 rounded-2xl border-2 transition-all cursor-pointer flex justify-between items-center group",
+                                     selectedShipping === option.id 
+                                       ? "border-[#304930] bg-[#304930]/5" 
+                                       : "border-black/5 bg-white hover:border-[#304930]/20"
+                                   )}
+                                 >
+                                    <div className="flex items-center gap-4">
+                                       <div className={cn(
+                                         "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all",
+                                         selectedShipping === option.id ? "border-[#304930]" : "border-slate-200"
+                                       )}>
+                                          {selectedShipping === option.id && <div className="w-2.5 h-2.5 bg-[#304930] rounded-full" />}
+                                       </div>
+                                       <div>
+                                          <p className="text-xs font-black text-[#304930] uppercase tracking-widest">{option.name}</p>
+                                          <p className="text-[10px] text-slate-400 font-medium">{option.time}</p>
+                                       </div>
+                                    </div>
+                                    <p className="text-xs font-black text-[#304930]">R$ {option.price}</p>
+                                 </div>
+                               ))}
+                            </div>
+                         </div>
+
+                         <div className="space-y-2">
+                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Observações da Arte</label>
+                            <textarea 
+                              value={formData.observation}
+                              onChange={(e) => setFormData({...formData, observation: e.target.value})}
+                              rows={2}
+                              placeholder="Algum detalhe especial para a pintura?" 
+                              className="w-full bg-[#F8FAF8] border border-black/5 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#304930]/20 transition-all font-medium resize-none outline-dashed outline-1 outline-black/5"
+                            />
+                         </div>
+                      </div>
+                   </div>
+
+                   {/* Payment Info */}
+                   <div className="titan-card p-10 bg-[#304930] text-white">
+                      <div className="flex items-center gap-4 mb-8">
+                         <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center">
+                            <CreditCard className="w-5 h-5 text-emerald-400" />
+                         </div>
+                         <h2 className="text-lg font-serif uppercase tracking-widest text-emerald-100">Pagamento & Conclusão</h2>
+                      </div>
+                      <p className="text-sm text-emerald-100/60 leading-relaxed mb-10">
+                         Seu pedido será enviado para o WhatsApp de Laura Verissimo. Lá você poderá combinar a forma de pagamento (Pix ou Link de Cartão) e tirar dúvidas sobre a personalização.
+                      </p>
+                      
+                      <button 
+                        type="submit"
+                        disabled={isSubmitting || items.length === 0}
+                        className={cn(
+                         "w-full py-8 rounded-[2.5rem] bg-white text-[#304930] font-black text-xs uppercase tracking-[0.4em] shadow-2xl flex items-center justify-center gap-4 transition-all",
+                         isSubmitting ? "opacity-70" : "hover:bg-emerald-50 hover:scale-[1.02] active:scale-95"
+                        )}
+                      >
+                         {isSubmitting ? 'Gerando Pedido...' : 'Finalizar via WhatsApp'}
+                         <MessageCircle className="w-6 h-6 text-emerald-600" />
+                      </button>
+                   </div>
+                </form>
+
+                {/* Cart Summary (Review) */}
+                <div className="col-span-12 lg:col-span-5">
+                   <div className="titan-card h-fit overflow-hidden border-black/5">
+                      <div className="p-8 bg-[#F8FAF8] border-b border-black/5">
+                         <h3 className="text-sm font-black uppercase tracking-widest text-[#304930]">Resumo da Compra</h3>
+                      </div>
+                      
+                      <div className="p-8 space-y-6 max-h-[400px] overflow-y-auto no-scrollbar">
+                         {items.map((item) => (
+                            <div key={item.variantId} className="flex gap-4">
+                               <div className="w-16 h-16 bg-[#304930]/5 rounded-2xl flex-shrink-0 flex items-center justify-center border border-black/5">
+                                  <ShoppingBag className="w-6 h-6 text-[#304930]/10" />
+                               </div>
+                               <div className="flex-1">
+                                  <p className="text-xs font-bold text-[#304930] line-clamp-1">{item.productName}</p>
+                                  <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">{item.quantity}x • {item.variantModel}</p>
+                                  <p className="text-xs font-black text-[#304930]/60 mt-1">R$ {item.subtotal.toLocaleString('pt-BR')}</p>
+                               </div>
+                            </div>
+                         ))}
+                      </div>
+
+                      <div className="p-8 bg-[#F8FAF8] border-t border-black/5 space-y-4">
+                         <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-400">
+                            <span>Subtotal</span>
+                            <span>R$ {subtotal.toLocaleString('pt-BR')}</span>
+                         </div>
+                         <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-400">
+                            <span>Entrega ({currentShipping.name})</span>
+                            <span>R$ {currentShipping.price.toLocaleString('pt-BR')}</span>
+                         </div>
+                         <div className="flex justify-between items-center text-xl font-black tracking-tighter text-[#304930] pt-2">
+                            <span>Total</span>
+                            <span className="text-[#D4AF37]">R$ {finalTotal.toLocaleString('pt-BR')}</span>
+                         </div>
+                      </div>
+
+                      <div className="p-8 flex flex-col items-center gap-6">
+                          <div className="flex items-center gap-2">
+                             <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                             <p className="text-[9px] font-black uppercase tracking-widest text-[#304930]">Checkout Seguro</p>
+                          </div>
                          <div className="w-full p-4 rounded-2xl bg-amber-50 border border-amber-100 flex gap-4">
                             <Sparkles className="w-5 h-5 text-amber-600 shrink-0" />
                             <p className="text-[10px] text-amber-800 leading-relaxed font-medium">

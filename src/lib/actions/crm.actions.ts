@@ -435,3 +435,24 @@ export async function promoteClientToVIP(clientId: string) {
     return { success: false, error: 'Erro ao promover cliente' }
   }
 }
+
+// ========================================
+// GESTÃO DE FORNECEDORES
+// ========================================
+
+export async function getSuppliers() {
+  try {
+    return await prisma.supplier.findMany({
+      include: {
+        _count: {
+          select: { supplies: true }
+        }
+      },
+      orderBy: { name: 'asc' }
+    })
+  } catch (error) {
+    console.error('[CRM] Erro ao buscar fornecedores:', error)
+    return []
+  }
+}
+

@@ -3,6 +3,10 @@
 
 // CRM Actions
 export * from './crm.actions'
+export { 
+  getClientsWithMetrics as getClients, 
+  getCRMMetrics as getClientMetrics 
+} from './crm.actions'
 
 // Dashboard Analytics
 export * from './dashboard.actions'
@@ -21,3 +25,7 @@ export * from './ai.actions'
 
 // Products & Catalog
 export * from './products.actions'
+
+// System Config
+export * from './config.actions'
+
