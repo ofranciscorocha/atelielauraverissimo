@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { 
   BarChart3, Calendar, ClipboardList, Mail, Settings, 
   Package, ShoppingCart, UserCheck, Wallet, Bot, Home,
-  Menu, Bell, ChevronRight, Truck
+  Menu, Bell, ChevronRight, Truck, Palette
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
