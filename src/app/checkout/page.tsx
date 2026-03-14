@@ -257,9 +257,45 @@ export default function CheckoutPage() {
                          </div>
 
                          <div className="space-y-4">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Forma de Envio</label>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                               {shippingOptions.map((option) => (
+                            <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Calcular Frete</label>
+                            <div className="flex gap-3">
+                               <input
+                                 type="text"
+                                 value={cep}
+                                 onChange={(e) => setCep(e.target.value)}
+                                 placeholder="Digite seu CEP"
+                                 maxLength={9}
+                                 className="flex-1 bg-[#F8FAF8] border border-black/5 rounded-2xl px-6 py-4 text-sm focus:outline-none focus:ring-1 focus:ring-[#304930]/20 transition-all font-medium"
+                               />
+                               <button
+                                 type="button"
+                                 onClick={handleCalculateShipping}
+                                 disabled={loadingShipping || cep.length < 8}
+                                 className={cn(
+                                   "px-8 py-4 rounded-2xl bg-[#304930] text-white font-black text-[10px] uppercase tracking-widest transition-all flex items-center gap-2",
+                                   loadingShipping || cep.length < 8 ? "opacity-50 cursor-not-allowed" : "hover:bg-[#304930]/90"
+                                 )}
+                               >
+                                 {loadingShipping ? (
+                                   <>
+                                     <Loader2 className="w-4 h-4 animate-spin" />
+                                     Calculando
+                                   </>
+                                 ) : (
+                                   <>
+                                     <Package className="w-4 h-4" />
+                                     Calcular
+                                   </>
+                                 )}
+                               </button>
+                            </div>
+                         </div>
+
+                         {shippingOptions.length > 0 && (
+                           <div className="space-y-4">
+                              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Forma de Envio</label>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                 {shippingOptions.map((option) => (
                                  <div 
                                    key={option.id}
                                    onClick={() => setSelectedShipping(option.id)}
@@ -279,14 +315,15 @@ export default function CheckoutPage() {
                                        </div>
                                        <div>
                                           <p className="text-xs font-black text-[#304930] uppercase tracking-widest">{option.name}</p>
-                                          <p className="text-[10px] text-slate-400 font-medium">{option.time}</p>
+                                          <p className="text-[10px] text-slate-400 font-medium">{option.deliveryTime}</p>
                                        </div>
                                     </div>
                                     <p className="text-xs font-black text-[#304930]">R$ {option.price}</p>
                                  </div>
                                ))}
-                            </div>
-                         </div>
+                              </div>
+                           </div>
+                         )}
 
                          <div className="space-y-2">
                             <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Observações da Arte</label>
@@ -421,10 +458,12 @@ export default function CheckoutPage() {
                             <span>Subtotal</span>
                             <span>R$ {subtotal.toLocaleString('pt-BR')}</span>
                          </div>
-                         <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-400">
-                            <span>Entrega ({currentShipping.name})</span>
-                            <span>R$ {currentShipping.price.toLocaleString('pt-BR')}</span>
-                         </div>
+                         {currentShipping && (
+                           <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-400">
+                              <span>Entrega ({currentShipping.name})</span>
+                              <span>R$ {currentShipping.price.toLocaleString('pt-BR')}</span>
+                           </div>
+                         )}
                          <div className="flex justify-between items-center text-xl font-black tracking-tighter text-[#304930] pt-2">
                             <span>Total</span>
                             <span className="text-[#D4AF37]">R$ {finalTotal.toLocaleString('pt-BR')}</span>
