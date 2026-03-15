@@ -1,0 +1,4 @@
+{
+  "buildCommand": "prisma db push --skip-generate && npm run build",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./"
+}
