@@ -498,3 +498,62 @@ export async function updateOrderNotes(orderId: string, notes: string) {
     return { success: false, error: 'Erro ao atualizar observações' }
   }
 }
+
+// ========================================
+// OBTER PEDIDOS DO CLIENTE (BY CLIENT ID)
+// ========================================
+
+export async function getUserOrders(clientId: string) {
+  try {
+    if (!clientId) {
+      return { success: true, orders: [] }
+    }
+
+    const orders = await prisma.order.findMany({
+      where: { clientId },
+      include: {
+        items: {
+          include: {
+            product: true,
+            variant: true
+          }
+        },
+        client: {
+          select: {
+            name: true,
+            email: true
+          }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    })
+
+    return {
+      success: true,
+      orders: orders.map(order => ({
+        id: order.id,
+        createdAt: order.createdAt,
+        status: order.status,
+        productionStatus: order.productionStatus,
+        subtotal: order.subtotal.toNumber(),
+        shippingFee: order.shippingFee.toNumber(),
+        total: order.total.toNumber(),
+        estimatedDeliveryDate: order.estimatedDeliveryDate,
+        shippingTrackingCode: order.shippingTrackingCode,
+        items: order.items.map(item => ({
+          id: item.id,
+          productName: item.product.name,
+          variantModel: item.variant.model,
+          variantColor: item.variant.color,
+          variantCapacity: item.variant.capacity,
+          quantity: item.quantity,
+          unitPrice: item.unitPrice.toNumber(),
+          subtotal: item.subtotal.toNumber()
+        }))
+      }))
+    }
+  } catch (error) {
+    console.error('Get user orders error:', error)
+    return { success: false, error: 'Erro ao buscar pedidos', orders: [] }
+  }
+}

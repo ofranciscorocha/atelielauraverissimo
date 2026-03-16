@@ -53,7 +53,6 @@ model Client {
   // Relacionamentos
   orders          Order[]
   marketingLogs   MarketingLog[]
-  user            User?
 
   @@index([ranking])
   @@index([segment])
@@ -173,7 +172,6 @@ model Order {
   // Relacionamentos
   items       OrderItem[]
   finance     FinanceEntry?
-  payment     Payment?
 
   @@index([clientId])
   @@index([status])
@@ -493,134 +491,4 @@ model Settings {
 
   // OpenAI (Nano Banana Pro)
   openaiApiKey      String?
-}
-
-// ========================================
-// AUTENTICAÇÃO & USUÁRIOS
-// ========================================
-
-model User {
-  id            String    @id @default(cuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  email         String    @unique
-  passwordHash  String
-  name          String
-  
-  // Vinculação com Cliente
-  clientId      String?   @unique
-  client        Client?   @relation(fields: [clientId], references: [id])
-  
-  // Sessões
-  sessions      Session[]
-  messages      Message[]
-  
-  @@index([email])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  sessionToken String   @unique
-  expires      DateTime
-  createdAt    DateTime @default(now())
-  
-  @@index([userId])
-  @@index([sessionToken])
-}
-
-// ========================================
-// CHAT & MENSAGENS
-// ========================================
-
-model Message {
-  id          String      @id @default(cuid())
-  createdAt   DateTime    @default(now())
-  
-  // Remetente
-  userId      String?
-  user        User?       @relation(fields: [userId], references: [id])
-  senderType  SenderType
-  senderName  String      // Nome exibido
-  
-  // Pedido Relacionado (opcional)
-  orderId     String?
-  
-  // Conteúdo
-  content     String      @db.Text
-  attachments String[]    @default([])
-  
-  // Status
-  read        Boolean     @default(false)
-  readAt      DateTime?
-  
-  @@index([userId])
-  @@index([orderId])
-  @@index([createdAt])
-}
-
-enum SenderType {
-  CUSTOMER
-  ADMIN
-  SYSTEM
-}
-
-// ========================================
-// PAGAMENTOS
-// ========================================
-
-model Payment {
-  id               String        @id @default(cuid())
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  
-  // Pedido
-  orderId          String        @unique
-  order            Order         @relation(fields: [orderId], references: [id])
-  
-  // Método de Pagamento
-  paymentMethod    PaymentMethod
-  
-  // Valores
-  amount           Decimal       @db.Decimal(10, 2)
-  
-  // Status
-  status           PaymentStatus @default(PENDENTE)
-  
-  // Mercado Pago / PIX
-  externalId       String?       // ID do Mercado Pago
-  preferenceId     String?       // ID da preferência MP
-  payerEmail       String?
-  payerName        String?
-  
-  // PIX específico
-  pixQrCode        String?       @db.Text
-  pixKey           String?
-  
-  // Comprovante
-  proofImageUrl    String?
-  
-  // Datas
-  paidAt           DateTime?
-  
-  @@index([orderId])
-  @@index([status])
-  @@index([externalId])
-}
-
-enum PaymentMethod {
-  PIX
-  MERCADO_PAGO
-  TRANSFERENCIA
-  DINHEIRO
-}
-
-enum PaymentStatus {
-  PENDENTE
-  APROVADO
-  RECUSADO
-  CANCELADO
-  ESTORNADO
 }

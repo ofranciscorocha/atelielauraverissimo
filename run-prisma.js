@@ -5,10 +5,12 @@ const env = {
 };
 
 try {
-  console.log('Running prisma db push...');
-  const output = execSync('npx prisma db push', { env, stdio: 'inherit', encoding: 'utf-8' });
-  console.log('Success!');
+  console.log('🚀 Rodando Prisma DB Push...\n');
+  execSync('npm exec prisma -- db push', { env, stdio: 'inherit' });
+  console.log('\n✅ Schema enviado para o banco!');
+
+  console.log('\n🎉 PRONTO! Agora rode: npm run dev');
 } catch (error) {
-  console.error('Failed to run prisma db push');
+  console.error('\n❌ Erro ao executar Prisma:', error.message);
   process.exit(1);
 }
