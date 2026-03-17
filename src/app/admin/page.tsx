@@ -22,7 +22,7 @@ export default async function AdminDashboard() {
       {/* Welcome Header */}
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-serif text-[#304930]">Bem-vinda de volta, Laura.</h1>
+          <h1 className="text-3xl font-serif text-[#304930]">Bem-vindos de volta, Laura.</h1>
           <p className="text-sm text-slate-500 font-medium">Seu ateliê está com {metrics.ordersInProduction} pinturas em andamento hoje.</p>
         </div>
         <div className="flex gap-4">

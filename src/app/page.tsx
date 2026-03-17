@@ -65,23 +65,68 @@ export default function Home() {
       {/* Features Grid */}
       <section className="py-32 px-6 container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          <FeatureCard 
-            icon={Palette} 
-            title="Pintura Manual" 
+          <FeatureCard
+            icon={Palette}
+            title="Pintura Manual"
             desc="Cada pincelada é única, fruto de horas de dedicação e técnica artística exclusiva."
           />
-          <FeatureCard 
-            icon={Star} 
-            title="Design Exclusivo" 
+          <FeatureCard
+            icon={Star}
+            title="Design Exclusivo"
             desc="Modelos desenvolvidos para serem o centro das atenções em sua mesa ou decoração."
           />
-          <FeatureCard 
-            icon={Heart} 
-            title="Feito com Afeto" 
+          <FeatureCard
+            icon={Heart}
+            title="Feito com Afeto"
             desc="Embalagens especiais e a possibilidade de incluir recadinhos personalizados."
           />
         </div>
       </section>
+
+      {/* Nossa Alquimia Section */}
+      <section className="py-32 px-6 container mx-auto">
+        <div className="text-center mb-20">
+          <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-[#304930]/5 border border-[#304930]/10 mb-6">
+            <Sparkles className="w-4 h-4 text-[#D6B799]" />
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#304930]">O Processo</span>
+          </div>
+          <h2 className="text-5xl font-serif text-[#304930] mb-6">Nossa Alquimia</h2>
+          <p className="max-w-2xl mx-auto text-lg text-[#304930]/60 leading-relaxed">
+            Cada peça guarda uma história única contada através de pinceladas únicas
+          </p>
+        </div>
+
+        <div className="max-w-4xl mx-auto">
+          <div className="titan-card p-12 text-center">
+            <p className="text-xl text-[#304930]/80 leading-relaxed font-medium mb-8">
+              No estágio final, cada taça é revisada e bem embalada, pronta para transformar sua mesa em uma galeria.
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <div className="h-[2px] w-20 bg-gradient-to-r from-transparent to-[#D6B799]"></div>
+              <Sparkles className="w-5 h-5 text-[#D6B799]" />
+              <div className="h-[2px] w-20 bg-gradient-to-l from-transparent to-[#D6B799]"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-20 px-6 bg-[#304930] text-white">
+        <div className="container mx-auto text-center">
+          <div className="mb-8">
+            <h3 className="text-3xl font-serif mb-4">Laura Veríssimo Atelier</h3>
+            <p className="text-white/60 max-w-2xl mx-auto leading-relaxed">
+              Transformando cristais em obras de arte através da delicadeza da pintura à mão.
+            </p>
+          </div>
+
+          <div className="flex items-center justify-center gap-2 text-white/40 text-xs">
+            <span>© 2026 Laura Veríssimo Atelier</span>
+            <span>•</span>
+            <span>Todos os direitos reservados</span>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }

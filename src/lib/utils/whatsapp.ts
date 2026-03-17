@@ -157,7 +157,7 @@ export function generateRecoveryMessage(customerName: string, daysInactive: numb
 // ========================================
 
 export function generateWelcomeMessage(customerName: string): string {
-  return `Olá ${customerName}! 🌟 Seja muito bem-vinda(o) ao Ateliê Laura Verissimo! 💚\n\nCada peça aqui é pintada à mão com muito amor e exclusividade. Fico feliz em ter você por aqui!\n\nQualquer dúvida, estou à disposição! ✨\n\nCom carinho,\nLaura 💚`
+  return `Olá ${customerName}! 🌟 Sejam muito bem-vindos ao Ateliê Laura Verissimo! 💚\n\nCada peça aqui é pintada à mão com muito amor e exclusividade. Fico feliz em ter você por aqui!\n\nQualquer dúvida, estou à disposição! ✨\n\nCom carinho,\nLaura 💚`
 }
 
 // ========================================
