@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { useCart } from '@/contexts/CartContext';
-import { createOrder, calculateShipping, formatShippingOption } from '@/lib/actions';
+import { createOrder, calculateShipping, formatShippingOption, createPayment } from '@/lib/actions';
+import { createPaymentLinkForOrder } from '@/lib/mercadopago';
 import {
   ShoppingBag,
   ChevronRight,
@@ -115,19 +116,56 @@ export default function CheckoutPage() {
       const result = await createOrder(orderData);
 
       if (result.success) {
-        // Enviar para WhatsApp
-        const paymentText = paymentMethod === 'pix' ? 'PIX' : paymentMethod === 'card' ? 'Cartão de Crédito (Link de Pagamento)' : 'Boleto';
-        const whatsappMsg = `Olá Laura! 💚 Gostaria de finalizar meu pedido no Ateliê:%0A%0A*Pedido:* #${result.order.id.slice(-8)}%0A*Cliente:* ${formData.name}%0A*WhatsApp:* ${formData.phone}%0A*CEP:* ${cep}%0A*Entrega:* ${currentShipping.name} (${currentShipping.deliveryTime})%0A*Valor do Frete:* R$ ${currentShipping.price.toFixed(2)}%0A*Pagamento:* ${paymentText}%0A*Total:* R$ ${finalTotal.toFixed(2)}%0A%0A*Itens do Pedido:*%0A${items.map(i => `• ${i.quantity}x ${i.productName} (${i.variantModel})`).join('%0A')}%0A%0A*Endereço Completo:*%0A${formData.address}${formData.observation ? `%0A%0A*Observações da Arte:*%0A${formData.observation}` : ''}%0A%0AAguardo o retorno para confirmar o pagamento! ✨`;
+        // Gerar link de pagamento do Mercado Pago
+        const paymentLinkResult = await createPaymentLinkForOrder({
+          orderId: result.order.id,
+          items: items.map(item => ({
+            productName: item.productName,
+            variantModel: item.variantModel,
+            quantity: item.quantity,
+            unitPrice: item.unitPrice,
+          })),
+          shippingFee: currentShipping.price,
+          total: finalTotal,
+          customerName: formData.name,
+          customerEmail: formData.email || undefined,
+          customerPhone: formData.phone,
+        });
 
-        const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '5524992982442';
+        if (paymentLinkResult.success && paymentLinkResult.paymentLink) {
+          // Criar registro de pagamento no banco
+          await createPayment({
+            orderId: result.order.id,
+            paymentMethod: paymentMethod === 'pix' ? 'PIX' : 'MERCADO_PAGO',
+            amount: finalTotal,
+            preferenceId: paymentLinkResult.preferenceId,
+            payerEmail: formData.email || undefined,
+            payerName: formData.name,
+          });
 
-        clearCart();
-        setIsSuccess(true);
+          clearCart();
+          setIsSuccess(true);
 
-        // Abrir WhatsApp em nova aba
-        setTimeout(() => {
-          window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMsg}`, '_blank');
-        }, 1000);
+          // Redirecionar para link de pagamento do Mercado Pago
+          setTimeout(() => {
+            window.location.href = paymentLinkResult.paymentLink!;
+          }, 1500);
+        } else {
+          // Fallback: Se falhar geração do link, enviar para WhatsApp
+          console.error('[CHECKOUT] Erro ao gerar link de pagamento:', paymentLinkResult.error);
+
+          const paymentText = paymentMethod === 'pix' ? 'PIX' : 'Cartão de Crédito';
+          const whatsappMsg = `Olá Laura! 💚 Gostaria de finalizar meu pedido no Ateliê:%0A%0A*Pedido:* #${result.order.id.slice(-8)}%0A*Cliente:* ${formData.name}%0A*WhatsApp:* ${formData.phone}%0A*CEP:* ${cep}%0A*Entrega:* ${currentShipping.name} (${currentShipping.deliveryTime})%0A*Valor do Frete:* R$ ${currentShipping.price.toFixed(2)}%0A*Pagamento:* ${paymentText}%0A*Total:* R$ ${finalTotal.toFixed(2)}%0A%0A*Itens do Pedido:*%0A${items.map(i => `• ${i.quantity}x ${i.productName} (${i.variantModel})`).join('%0A')}%0A%0A*Endereço Completo:*%0A${formData.address}${formData.observation ? `%0A%0A*Observações da Arte:*%0A${formData.observation}` : ''}%0A%0AAguardo o link de pagamento! ✨`;
+
+          const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '5524992982442';
+
+          clearCart();
+          setIsSuccess(true);
+
+          setTimeout(() => {
+            window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMsg}`, '_blank');
+          }, 1000);
+        }
       }
     } catch (error) {
        console.error('[CHECKOUT] Erro:', error);
@@ -146,23 +184,23 @@ export default function CheckoutPage() {
            <div className="w-24 h-24 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-100">
               <Sparkles className="w-12 h-12 text-emerald-600" />
            </div>
-           <h2 className="text-4xl font-serif text-[#304930]">Recebemos seu pedido com carinho!</h2>
+           <h2 className="text-4xl font-serif text-[#304930]">Pedido criado com sucesso!</h2>
            <p className="text-slate-600 leading-relaxed">
-             Obrigado, <span className="font-bold text-[#304930]">{formData.name}</span>. <br />
-             Seu pedido foi registrado em nosso sistema e a conversa no WhatsApp foi iniciada. 
-             Entraremos em contato em breve para alinhar os detalhes finais e a produção da sua arte exclusiva.
+             Obrigado, <span className="font-bold text-[#304930]">{formData.name}</span>! <br />
+             Você será redirecionado para a página de pagamento do Mercado Pago em instantes.
+             Lá você poderá pagar com PIX (desconto instantâneo) ou Cartão de Crédito (até 12x).
            </p>
            
            <div className="pt-8 grid gap-4">
               <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Próximos Passos</p>
               <div className="flex flex-col gap-3">
                  <div className="flex items-center gap-4 bg-emerald-50/50 p-4 rounded-2xl text-left border border-emerald-100/50">
-                    <MessageCircle className="w-5 h-5 text-emerald-600" />
-                    <p className="text-xs font-medium text-emerald-900">Finalizar o pagamento via WhatsApp</p>
+                    <CreditCard className="w-5 h-5 text-emerald-600" />
+                    <p className="text-xs font-medium text-emerald-900">Pagar com PIX ou Cartão no Mercado Pago</p>
                  </div>
                  <div className="flex items-center gap-4 bg-emerald-50/50 p-4 rounded-2xl text-left border border-emerald-100/50">
                     <Sparkles className="w-5 h-5 text-emerald-600" />
-                    <p className="text-xs font-medium text-emerald-900">Aguardar o início da pintura artesanal</p>
+                    <p className="text-xs font-medium text-emerald-900">Sua taça começará a ser pintada assim que o pagamento for confirmado</p>
                  </div>
               </div>
            </div>
@@ -414,7 +452,7 @@ export default function CheckoutPage() {
                          <h2 className="text-lg font-serif uppercase tracking-widest text-emerald-100">Pagamento & Conclusão</h2>
                       </div>
                       <p className="text-sm text-emerald-100/60 leading-relaxed mb-10">
-                         Seu pedido será enviado para o WhatsApp de Laura Verissimo. Lá você poderá combinar a forma de pagamento (Pix ou Link de Cartão) e tirar dúvidas sobre a personalização.
+                         Após confirmar o pedido, você será redirecionado para o Mercado Pago onde poderá escolher entre PIX (aprovação instantânea) ou Cartão de Crédito (até 12x). Pagamento 100% seguro.
                       </p>
                       
                       <button 
@@ -425,8 +463,8 @@ export default function CheckoutPage() {
                          isSubmitting ? "opacity-70" : "hover:bg-emerald-50 hover:scale-[1.02] active:scale-95"
                         )}
                       >
-                         {isSubmitting ? 'Gerando Pedido...' : 'Finalizar via WhatsApp'}
-                         <MessageCircle className="w-6 h-6 text-emerald-600" />
+                         {isSubmitting ? 'Gerando Link de Pagamento...' : 'Ir para Pagamento'}
+                         <CreditCard className="w-6 h-6 text-emerald-600" />
                       </button>
                    </div>
                 </form>

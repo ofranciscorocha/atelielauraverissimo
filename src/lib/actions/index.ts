@@ -31,3 +31,6 @@ export * from './config.actions'
 
 // Shipping (Melhor Envio)
 export * from './shipping.actions'
+
+// Payments (Mercado Pago)
+export * from './payments.actions'

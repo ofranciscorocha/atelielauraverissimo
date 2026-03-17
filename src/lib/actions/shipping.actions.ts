@@ -58,11 +58,11 @@ export interface ShippingCalculateRequest {
 // CONFIGURAÇÃO MELHOR ENVIO
 // ========================================
 
-const MELHOR_ENVIO_API_URL = 'https://sandbox.melhorenvio.com.br/api/v2/me'
-const MELHOR_ENVIO_TOKEN = process.env.MELHOR_ENVIO_TOKEN || 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYjhjYTc3ZjlmNmJjNjYwMGM2ZGYxMjU1OWZiNTcyMzUzOTUzNzU2Y2IzZWE1ZGViOTIxY2JmYTE4OGIzZTkyMGZhMzFiNTEzOTdmMmZlNGIiLCJpYXQiOjE3NzM1MjY1NTAuOTc4OCwibmJmIjoxNzczNTI2NTUwLjk3ODgwMywiZXhwIjoxODA1MDYyNTUwLjk2NjA1LCJzdWIiOiJhMTRkMjAzZS1iMDljLTQ3NjUtOWQxNi1iZGM2NjI1OWFjY2UiLCJzY29wZXMiOlsic2hpcHBpbmctY2FsY3VsYXRlIl19.P0kIXdep2A9vfFgmpnWzCCn_nqzAI5xHBJh1DitqxFqMoc1w0pcSLid0xZViT4r2kKbi5bBWpLLGePxLwFMK-O1K4sFnh1Y_gcsYGSJJAikwcRv1KAIeezmYDUahQ9keG4P7nYD9s2q3qNZlt40wSZwn0AvwZS6FuLebiEop8rUUU2e4BYTavSiVTIX1Al7pOfajUJjfl1ei-JakJ91k1dpzXIg-8MboTFDZWTxRD55KeKzdgYNUDSy0i1YN0zDHZBmH5RCwgljAyJRK7XmYOF4BZ26EmLDnLjUfUt8quKVHmCaOOFUA8WHqBac6vbEerLa1JUgZsnJ5Spskak1ikq0Yivl-6xU1N0ZmSYL9OfXmWaBR8T2QT2U6TKxacGTc-F8sD4gS-HODKdGlurAeTHI-NSBw6KcL6JfHuQs3LJQCs7wM2gEUl2Kazt1RozjoVHV1pipBCJTFmvVV1t0Pdsn2PieXKlDPoRhI_wAekT35-PAIIWtxSbm7ChRyo4pNZNeE4wmjDmuT0kMhSXaArohPWOu_BTJ6EP1sxjT_vy9TDKaiinADdj9UO779w7FcUCE5IJF8o2hMli351PVrBj9vIIML2YpThZw9lUKR7dmNngCIJEFWWuuHSqZ3cD8AG9NrkxW7liA6R-1TdGV4x6oaNtY54r-stePVxCr7Bqs'
+const MELHOR_ENVIO_API_URL = process.env.MELHOR_ENVIO_API_URL || 'https://melhorenvio.com.br/api/v2/me'
+const MELHOR_ENVIO_TOKEN = process.env.MELHOR_ENVIO_TOKEN
 
-// CEP de origem (Laura Verissimo Atelier)
-const ORIGIN_POSTAL_CODE = '01310-100' // São Paulo - SP (exemplo, ajustar conforme real)
+// CEP de origem (Laura Verissimo Atelier - Feira de Santana, BA)
+const ORIGIN_POSTAL_CODE = process.env.ORIGIN_POSTAL_CODE || '44053-744'
 
 // Dimensões padrão de uma taça (em cm e kg)
 const DEFAULT_PACKAGE = {
