@@ -42,7 +42,7 @@ export default async function FornecedoresPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
          <SupplierStatCard label="Parceiros Ativos" value={suppliers.length.toString()} icon={ShieldCheck} color="text-emerald-500" />
          <SupplierStatCard label="Entregas no Prazo" value="98%" icon={Truck} color="text-[#304930]" />
-         <SupplierStatCard label="Qualidade Média" value="4.9" icon={Star} color="text-[#D4AF37]" />
+         <SupplierStatCard label="Qualidade Média" value="4.9" icon={Star} color="text-[#D6B799]" />
       </div>
 
       {/* Supplier Grid */}
@@ -59,7 +59,7 @@ export default async function FornecedoresPage() {
                  <div className="flex justify-between items-start">
                     <div>
                        <h3 className="text-xl font-bold text-[#304930] mb-1">{supplier.name}</h3>
-                       <span className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37] bg-white border border-[#D4AF37]/20 px-2 py-0.5 rounded-lg flex items-center gap-1 w-fit">
+                       <span className="text-[10px] font-black uppercase tracking-widest text-[#D6B799] bg-white border border-[#D6B799]/20 px-2 py-0.5 rounded-lg flex items-center gap-1 w-fit">
                           <ShieldCheck className="w-3 h-3" /> Verificado
                        </span>
                     </div>

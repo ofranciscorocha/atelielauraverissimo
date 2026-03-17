@@ -35,7 +35,7 @@ export const Navbar = () => {
           <Link href="/carrinho" className="p-2.5 bg-[#304930]/5 text-[#304930] hover:bg-[#304930] hover:text-white rounded-2xl transition-all relative group">
             <ShoppingBag className="w-5 h-5 group-hover:scale-110" />
             {itemCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-[#D4AF37] text-white text-[9px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm animate-in zoom-in">
+              <span className="absolute -top-1 -right-1 bg-[#D6B799] text-white text-[9px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-sm animate-in zoom-in">
                 {itemCount}
               </span>
             )}

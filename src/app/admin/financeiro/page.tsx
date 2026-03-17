@@ -69,7 +69,7 @@ export default async function FinanceiroPage() {
            label="Lucro Líquido" 
            value={`R$ ${metrics.netProfit.toLocaleString('pt-BR')}`} 
            icon={Wallet} 
-           color="text-[#D4AF37]" 
+           color="text-[#D6B799]" 
            highlight
          />
          <FinanceCard 
@@ -103,7 +103,7 @@ export default async function FinanceiroPage() {
                         style={{ height: `${(data.revenue / (metrics.totalRevenue || 1)) * 200}px` }} 
                       />
                       <div 
-                        className="w-4 bg-[#D4AF37]/40 rounded-t-lg transition-all group-hover:bg-[#D4AF37]/60" 
+                        className="w-4 bg-[#D6B799]/40 rounded-t-lg transition-all group-hover:bg-[#D6B799]/60" 
                         style={{ height: `${(data.profit / (metrics.totalRevenue || 1)) * 180}px` }} 
                       />
                    </div>

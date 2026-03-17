@@ -62,7 +62,7 @@ export function OrderSummary({ cart, shippingCost, shippingMethod, discount = 0 
           <div className="space-y-4 max-h-64 overflow-y-auto">
             {cart.map((item, index) => (
               <div key={index} className="flex gap-4">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#304930]/10 to-[#D4AF37]/10 flex-shrink-0" />
+                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#304930]/10 to-[#D6B799]/10 flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <h4 className="font-bold text-sm text-[#304930] truncate">
                     {item.product.name}

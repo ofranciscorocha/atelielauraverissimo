@@ -56,7 +56,7 @@ export default function VirtualOfficePage() {
 
         <div className="flex gap-4">
            <button className="titan-card px-6 py-4 flex items-center gap-3 bg-[#304930]/5 hover:bg-[#304930]/10 transition-all border-[#304930]/20">
-              <Zap className="w-4 h-4 text-[#D4AF37]" />
+              <Zap className="w-4 h-4 text-[#D6B799]" />
               <span className="text-[10px] font-black uppercase tracking-widest text-[#304930]">Boot System</span>
            </button>
            <button className="titan-card px-8 py-4 flex items-center gap-3 bg-[#304930] text-white hover:scale-105 transition-all border-none shadow-xl shadow-[#304930]/20">
@@ -230,7 +230,7 @@ function ApprovalItem({ title, agent, type, time }: any) {
     <div className="titan-card p-8 bg-[#F8FAF8] border-black/5 flex flex-col md:flex-row items-center justify-between gap-8 group hover:border-[#304930]/20 transition-all">
        <div className="flex items-center gap-6">
           <div className="p-4 bg-white rounded-2xl shadow-sm border border-black/5 group-hover:scale-110 transition-transform">
-             <Sparkles className="w-6 h-6 text-[#D4AF37]" />
+             <Sparkles className="w-6 h-6 text-[#D6B799]" />
           </div>
           <div>
              <h4 className="text-lg font-bold text-[#304930]">{title}</h4>

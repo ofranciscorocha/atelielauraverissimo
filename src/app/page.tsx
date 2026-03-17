@@ -24,7 +24,7 @@ export default function Home() {
 
         <div className="container mx-auto px-6 relative z-10 text-center space-y-8">
           <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full frosted-glass border-white/40 shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+            <Sparkles className="w-4 h-4 text-[#D6B799]" />
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#304930]">Arte que brilha, Alma que encanta</span>
           </div>
           

@@ -31,7 +31,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
             <div className="w-1 h-1 bg-slate-200 rounded-full" />
             <Link href="/produtos" className="text-[10px] font-black uppercase tracking-widest hover:text-[#304930] transition-colors">Catálogo</Link>
             <div className="w-1 h-1 bg-slate-200 rounded-full" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">{product.name}</span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#D6B799]">{product.name}</span>
          </div>
 
          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
@@ -39,15 +39,15 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
             <div className="space-y-6">
                <div className="relative aspect-square bg-white rounded-3xl flex items-center justify-center p-20 overflow-hidden group border border-black/5">
                   <div className="absolute top-8 left-8 z-10 w-12 h-12 bg-white/90 backdrop-blur-md rounded-2xl flex items-center justify-center border border-black/5 shadow-xl">
-                     <Sparkles className="w-5 h-5 text-[#D4AF37]" />
+                     <Sparkles className="w-5 h-5 text-[#D6B799]" />
                   </div>
-                  <div className="w-40 h-40 bg-gradient-to-br from-[#304930]/10 to-[#D4AF37]/10 rounded-full group-hover:scale-110 transition-transform duration-700" />
+                  <div className="w-40 h-40 bg-gradient-to-br from-[#304930]/10 to-[#D6B799]/10 rounded-full group-hover:scale-110 transition-transform duration-700" />
                </div>
 
                <div className="grid grid-cols-4 gap-4">
                   {[1, 2, 3, 4].map((i) => (
                     <div key={i} className="aspect-square bg-white rounded-3xl border border-black/5 flex items-center justify-center cursor-pointer hover:border-[#304930]/20 transition-all overflow-hidden p-4 group">
-                       <div className="w-full h-full bg-gradient-to-br from-[#304930]/5 to-[#D4AF37]/5 rounded-lg group-hover:scale-110 transition-transform" />
+                       <div className="w-full h-full bg-gradient-to-br from-[#304930]/5 to-[#D6B799]/5 rounded-lg group-hover:scale-110 transition-transform" />
                     </div>
                   ))}
                </div>
@@ -65,7 +65,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
                <div className="flex items-center gap-6 mb-8">
                   <div className="flex items-center gap-1.5">
                      {[1, 2, 3, 4, 5].map((s) => (
-                       <Star key={s} className="w-3.5 h-3.5 fill-[#D4AF37] text-[#D4AF37]" />
+                       <Star key={s} className="w-3.5 h-3.5 fill-[#D6B799] text-[#D6B799]" />
                      ))}
                      <span className="text-xs font-bold text-[#304930] ml-2">4.9/5.0</span>
                   </div>
@@ -109,7 +109,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
                <h2 className="text-3xl font-serif text-[#304930] mb-2">Completam o brilho.</h2>
                <p className="text-sm text-slate-400 font-medium">Outras peças que você pode amar.</p>
             </div>
-            <Link href="/produtos" className="text-[10px] font-black uppercase tracking-widest text-[#304930] border-b-2 border-[#304930] pb-1 hover:text-[#D4AF37] hover:border-[#D4AF37] transition-colors">Ver Completo</Link>
+            <Link href="/produtos" className="text-[10px] font-black uppercase tracking-widest text-[#304930] border-b-2 border-[#304930] pb-1 hover:text-[#D6B799] hover:border-[#D6B799] transition-colors">Ver Completo</Link>
          </div>
 
          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -117,10 +117,10 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
             {[1, 2, 3, 4].map((i) => (
                <div key={i} className="group cursor-pointer">
                   <div className="aspect-square bg-white rounded-3xl border border-black/5 mb-4 group-hover:shadow-lg transition-all flex items-center justify-center overflow-hidden">
-                     <div className="w-24 h-24 bg-gradient-to-br from-[#304930]/10 to-[#D4AF37]/10 rounded-full group-hover:scale-110 transition-transform" />
+                     <div className="w-24 h-24 bg-gradient-to-br from-[#304930]/10 to-[#D6B799]/10 rounded-full group-hover:scale-110 transition-transform" />
                   </div>
                   <p className="text-xs font-bold text-[#304930] uppercase mb-1">Peça Complementar {i}</p>
-                  <p className="text-sm font-black text-[#D4AF37]">R$ 189,00</p>
+                  <p className="text-sm font-black text-[#D6B799]">R$ 189,00</p>
                </div>
             ))}
          </div>

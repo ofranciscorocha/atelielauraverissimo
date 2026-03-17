@@ -208,7 +208,7 @@ export function ProductCustomizer({ product }: ProductCustomizerProps) {
                 onClick={() => setSelectedColor(color)}
                 className={`px-6 py-3 rounded-2xl border text-[10px] font-black uppercase tracking-widest transition-all hover:bg-white active:scale-95 ${
                   selectedColor === color
-                    ? 'border-[#D4AF37] bg-[#D4AF37]/10 ring-2 ring-[#D4AF37]'
+                    ? 'border-[#D6B799] bg-[#D6B799]/10 ring-2 ring-[#D6B799]'
                     : 'border-black/10 hover:border-[#304930]/40'
                 }`}
               >
@@ -236,7 +236,7 @@ export function ProductCustomizer({ product }: ProductCustomizerProps) {
       {selectedVariant && (
         <div className="bg-[#304930]/5 rounded-2xl p-4 border border-[#304930]/10">
           <div className="flex items-start gap-3">
-            <Sparkles className="w-5 h-5 text-[#D4AF37] mt-0.5" />
+            <Sparkles className="w-5 h-5 text-[#D6B799] mt-0.5" />
             <div className="flex-1">
               <p className="text-xs font-black uppercase tracking-widest text-[#304930] mb-1">
                 Sua Configuração:

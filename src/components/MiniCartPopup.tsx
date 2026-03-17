@@ -81,7 +81,7 @@ export function MiniCartPopup() {
           <div className="space-y-2 mb-4 max-h-32 overflow-y-auto">
             {cart.slice(0, 3).map((item, idx) => (
               <div key={idx} className="flex items-center gap-3 text-sm">
-                <div className="w-2 h-2 rounded-full bg-[#D4AF37]" />
+                <div className="w-2 h-2 rounded-full bg-[#D6B799]" />
                 <span className="flex-1 text-[#304930]/70 truncate">
                   {item.quantity}x {item.product.name}
                 </span>

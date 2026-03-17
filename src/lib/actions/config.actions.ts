@@ -13,7 +13,7 @@ export async function getAppConfig() {
         logoUrl: null,
         primaryColor: '#304930',
         secondaryColor: '#F0F4F0',
-        accentColor: '#D4AF37',
+        accentColor: '#D6B799',
         banners: [],
         minProductionDays: 7,
         maxProductionDays: 15,

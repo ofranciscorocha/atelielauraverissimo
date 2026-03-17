@@ -188,7 +188,7 @@ function ProductionItem({ client, product, status, progress, date }: any) {
               <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">{client}</p>
             </div>
             <div className="text-right">
-              <span className="text-[9px] font-black uppercase text-[#D4AF37] text-glow-emerald">{status}</span>
+              <span className="text-[9px] font-black uppercase text-[#D6B799] text-glow-emerald">{status}</span>
               <p className="text-[9px] text-slate-400 font-medium">{date}</p>
             </div>
           </div>

@@ -68,7 +68,7 @@ export default async function ClientesPage() {
            label="Taxa de Retenção" 
            value={`${metrics.retentionRate.toFixed(1)}%`} 
            icon={Star} 
-           color="text-[#D4AF37]" 
+           color="text-[#D6B799]" 
          />
          <MetricCard 
            label="LTV Médio" 

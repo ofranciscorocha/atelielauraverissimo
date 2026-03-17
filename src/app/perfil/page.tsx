@@ -187,7 +187,7 @@ export default function PerfilPage() {
     <div className="min-h-screen bg-gradient-to-br from-[#F0F4F0] to-white py-12 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 border-t-4 border-[#D4AF37]">
+        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8 border-t-4 border-[#D6B799]">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#304930] to-[#456745] flex items-center justify-center text-white text-2xl font-bold">
               {session.name.charAt(0).toUpperCase()}
@@ -389,9 +389,9 @@ export default function PerfilPage() {
               <div>
                 <h2 className="text-2xl font-bold text-[#304930] mb-6">Meus Dados</h2>
                 <div className="space-y-6">
-                  <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#304930]/5 rounded-lg p-6 border-l-4 border-[#D4AF37]">
+                  <div className="bg-gradient-to-br from-[#D6B799]/10 to-[#304930]/5 rounded-lg p-6 border-l-4 border-[#D6B799]">
                     <div className="flex items-center gap-3 mb-4">
-                      <Crown className="w-8 h-8 text-[#D4AF37]" />
+                      <Crown className="w-8 h-8 text-[#D6B799]" />
                       <div>
                         <h3 className="text-lg font-bold text-[#304930]">Status VIP</h3>
                         <p className="text-sm text-gray-600">

@@ -27,7 +27,7 @@ export default async function CatalogoPage() {
               <div className="inline-flex items-center gap-2 mb-6 text-[#304930]/40">
                  <Link href="/" className="text-[10px] font-black uppercase tracking-widest hover:text-[#304930] transition-colors">Início</Link>
                  <ArrowRight className="w-3 h-3" />
-                 <span className="text-[10px] font-black uppercase tracking-widest text-[#D4AF37]">Catálogo</span>
+                 <span className="text-[10px] font-black uppercase tracking-widest text-[#D6B799]">Catálogo</span>
               </div>
               <h1 className="text-5xl md:text-7xl font-serif text-[#304930] mb-8">
                  Peças que contam <br />
@@ -86,7 +86,7 @@ export default async function CatalogoPage() {
                   <div className="relative overflow-hidden rounded-[2.5rem] bg-white aspect-[4/5] shadow-sm border border-black/5 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 mb-6">
                      {/* Discount/Badge Icon */}
                      <div className="absolute top-6 left-6 z-10 w-10 h-10 bg-white/90 backdrop-blur-md rounded-2xl flex items-center justify-center border border-whiteShadow animate-pulse">
-                        <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+                        <Sparkles className="w-4 h-4 text-[#D6B799]" />
                      </div>
 
                      {/* Product Image Placeholder (Using generate_image would be better for a real demo) */}
@@ -109,7 +109,7 @@ export default async function CatalogoPage() {
                   <div className="space-y-2 px-2">
                      <div className="flex justify-between items-start">
                         <h3 className="text-xl font-serif text-[#304930] group-hover:text-amber-700 transition-colors uppercase tracking-tight">{product.name}</h3>
-                        <div className="flex items-center gap-1 text-[#D4AF37]">
+                        <div className="flex items-center gap-1 text-[#D6B799]">
                            <Star className="w-3 h-3 fill-current" />
                            <span className="text-[10px] font-black tracking-widest">NEW</span>
                         </div>
@@ -118,7 +118,7 @@ export default async function CatalogoPage() {
                      <div className="flex items-center gap-3 pt-2">
                         <span className="text-lg font-black text-[#304930] tracking-tighter">R$ {product.basePrice.toLocaleString('pt-BR')}</span>
                         <div className="h-4 w-[1px] bg-[#304930]/10" />
-                        <p className="text-[9px] font-black uppercase tracking-widest text-[#D4AF37]">Em até 3x</p>
+                        <p className="text-[9px] font-black uppercase tracking-widest text-[#D6B799]">Em até 3x</p>
                      </div>
                   </div>
                </Link>

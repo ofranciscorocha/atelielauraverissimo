@@ -7,7 +7,7 @@ export const brandingConfig = {
   colors: {
     primary: "#304930",
     secondary: "#F0F4F0",
-    accent: "#D4AF37",
+    accent: "#D6B799",
     white: "#FFFFFF",
   },
   banners: [

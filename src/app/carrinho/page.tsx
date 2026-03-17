@@ -106,7 +106,7 @@ export default function CarrinhoPage() {
                   <div className="titan-card p-10 bg-[#304930] text-white">
                      <h2 className="text-xl font-serif mb-8 text-emerald-100 flex items-center gap-3">
                         Resumo do Pedido
-                        <ShoppingBag className="w-5 h-5 opacity-40 text-[#D4AF37]" />
+                        <ShoppingBag className="w-5 h-5 opacity-40 text-[#D6B799]" />
                      </h2>
 
                      <div className="space-y-6 mb-10">
@@ -121,7 +121,7 @@ export default function CarrinhoPage() {
                         <div className="h-[1px] w-full bg-white/10" />
                         <div className="flex justify-between items-center text-lg font-black tracking-tighter text-white">
                            <span>Total</span>
-                           <span className="text-[#D4AF37]">R$ {total.toLocaleString('pt-BR')}</span>
+                           <span className="text-[#D6B799]">R$ {total.toLocaleString('pt-BR')}</span>
                         </div>
                      </div>
 

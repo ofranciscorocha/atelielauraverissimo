@@ -44,7 +44,7 @@ export default async function MarketingPage() {
                <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-8">
                      <div className="p-2 bg-white/10 rounded-xl">
-                        <Sparkles className="w-5 h-5 text-[#D4AF37]" />
+                        <Sparkles className="w-5 h-5 text-[#D6B799]" />
                      </div>
                      <h3 className="text-sm font-black uppercase tracking-[0.2em]">Nano Banana Pro</h3>
                   </div>

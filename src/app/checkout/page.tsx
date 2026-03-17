@@ -466,7 +466,7 @@ export default function CheckoutPage() {
                          )}
                          <div className="flex justify-between items-center text-xl font-black tracking-tighter text-[#304930] pt-2">
                             <span>Total</span>
-                            <span className="text-[#D4AF37]">R$ {finalTotal.toLocaleString('pt-BR')}</span>
+                            <span className="text-[#D6B799]">R$ {finalTotal.toLocaleString('pt-BR')}</span>
                          </div>
                       </div>
 

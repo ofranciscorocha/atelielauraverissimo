@@ -17,7 +17,7 @@ export default async function AgendaPage() {
   const categories = [
     { name: 'Produção', color: 'bg-emerald-500' },
     { name: 'Pintura', color: 'bg-blue-500' },
-    { name: 'Entrega', color: 'bg-[#D4AF37]' },
+    { name: 'Entrega', color: 'bg-[#D6B799]' },
     { name: 'Feedback', color: 'bg-purple-500' },
   ];
 
@@ -123,8 +123,8 @@ export default async function AgendaPage() {
                          )}
 
                          {day === 15 && (
-                           <div className="mt-2 p-2 bg-[#D4AF37]/10 border-l-2 border-[#D4AF37] rounded-r-md">
-                              <p className="text-[8px] font-black text-[#D4AF37] uppercase leading-tight line-clamp-2">Entrega Express #923</p>
+                           <div className="mt-2 p-2 bg-[#D6B799]/10 border-l-2 border-[#D6B799] rounded-r-md">
+                              <p className="text-[8px] font-black text-[#D6B799] uppercase leading-tight line-clamp-2">Entrega Express #923</p>
                            </div>
                          )}
 

@@ -80,7 +80,7 @@ export default function RoboPage() {
             <div className="flex items-center justify-between">
                <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#304930]">Automações de Relacionamento</h3>
                <button className="text-[10px] font-black uppercase tracking-widest text-[#304930] flex items-center gap-2">
-                  Nova Automação <Zap className="w-4 h-4 text-[#D4AF37]" />
+                  Nova Automação <Zap className="w-4 h-4 text-[#D6B799]" />
                </button>
             </div>
 

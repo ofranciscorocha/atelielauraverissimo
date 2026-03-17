@@ -84,7 +84,7 @@ export default async function ConfigPage() {
                   </div>
                   <div className="flex gap-2">
                      <div className="w-8 h-8 rounded-full bg-[#304930] border border-white/20" />
-                     <div className="w-8 h-8 rounded-full bg-[#D4AF37]" />
+                     <div className="w-8 h-8 rounded-full bg-[#D6B799]" />
                      <div className="w-8 h-8 rounded-full bg-[#F8FAF8]" />
                   </div>
                </div>
@@ -96,7 +96,7 @@ export default async function ConfigPage() {
                   </div>
                   <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
                      <p className="text-[9px] font-black uppercase tracking-widest text-emerald-400 mb-2">Destaque</p>
-                     <p className="text-xs font-mono">#D4AF37</p>
+                     <p className="text-xs font-mono">#D6B799</p>
                   </div>
                   <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
                      <p className="text-[9px] font-black uppercase tracking-widest text-emerald-400 mb-2">Fundo</p>

@@ -85,7 +85,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
            <div className="flex items-center gap-6">
               <div className="relative">
                 <Bell className="w-5 h-5 text-slate-400" />
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#D4AF37] rounded-full border-2 border-white"></span>
+                <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#D6B799] rounded-full border-2 border-white"></span>
               </div>
               <div className="flex items-center gap-3 border-l border-black/5 pl-6">
                  <div className="text-right">
