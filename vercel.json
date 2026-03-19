@@ -1,1 +1,5 @@
-{"buildCommand": "next build","ignoreCommand": "git diff --quiet HEAD^ HEAD ./"}
+{
+  "buildCommand": "next build",
+  "outputDirectory": ".next",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./"
+}
