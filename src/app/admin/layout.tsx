@@ -107,7 +107,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   );
 }
 
-function Palette(props: any) {
+function CustomPaletteIcon(props: any) {
   return (
     <svg
       {...props}
