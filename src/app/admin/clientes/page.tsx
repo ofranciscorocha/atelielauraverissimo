@@ -29,7 +29,7 @@ export default async function ClientesPage() {
   const getRankingBadge = (ranking: string) => {
     switch (ranking) {
       case 'DIAMANTE': return 'bg-cyan-50 text-cyan-700 border-cyan-100';
-      case 'OURO': return 'bg-amber-50 text-amber-700 border-amber-100';
+      case 'OURO': return 'bg-[#D6B799]/10 text-[#D6B799] border-[#D6B799]/20';
       case 'PRATA': return 'bg-slate-50 text-slate-700 border-slate-100';
       default: return 'bg-slate-50 text-slate-500 border-slate-100';
     }

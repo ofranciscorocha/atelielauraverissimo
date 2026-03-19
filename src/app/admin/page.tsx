@@ -43,11 +43,11 @@ export default async function AdminDashboard() {
           icon={metrics.revenueGrowth >= 0 ? TrendingUp : TrendingDown} 
           color={metrics.revenueGrowth >= 0 ? "text-[#304930]" : "text-rose-500"} 
         />
-        <MetricCard 
-          label="Novos Clientes" 
-          value={metrics.newClientsThisMonth.toString()} 
-          icon={Users} 
-          color="text-amber-500" 
+        <MetricCard
+          label="Novos Clientes"
+          value={metrics.newClientsThisMonth.toString()}
+          icon={Users}
+          color="text-[#D6B799]"
         />
         <MetricCard 
           label="Em Produção" 
@@ -102,7 +102,7 @@ export default async function AdminDashboard() {
         {/* Favorite Clients ranking */}
         <div className="col-span-12 lg:col-span-4 titan-card p-8 bg-[#304930] text-white">
            <div className="flex items-center gap-3 mb-8">
-              <Star className="w-5 h-5 text-amber-400 fill-amber-400" />
+              <Star className="w-5 h-5 text-[#D6B799] fill-[#D6B799]" />
               <h3 className="text-sm font-black uppercase tracking-[0.2em]">Clientes Favoritos</h3>
            </div>
 
@@ -120,7 +120,7 @@ export default async function AdminDashboard() {
                       </p>
                     </div>
                   </div>
-                  <ArrowUpRight className="w-4 h-4 text-white/40 group-hover:text-amber-400 transition-colors" />
+                  <ArrowUpRight className="w-4 h-4 text-white/40 group-hover:text-[#D6B799] transition-colors" />
                 </div>
               ))}
               {topClients.length === 0 && (

@@ -29,7 +29,7 @@ export default async function EstoquePage() {
     switch (category) {
       case 'CRISTAL': return 'bg-cyan-50 text-cyan-600 border-cyan-100';
       case 'TINTA': return 'bg-purple-50 text-purple-600 border-purple-100';
-      case 'PINCEL': return 'bg-amber-50 text-amber-600 border-amber-100';
+      case 'PINCEL': return 'bg-[#D6B799]/10 text-[#D6B799] border-[#D6B799]/20';
       case 'EMBALAGEM': return 'bg-emerald-50 text-emerald-600 border-emerald-100';
       case 'ACESSORIO': return 'bg-rose-50 text-rose-600 border-rose-100';
       default: return 'bg-slate-50 text-slate-600 border-slate-100';
@@ -61,11 +61,11 @@ export default async function EstoquePage() {
            icon={Database} 
            color="text-[#304930]" 
          />
-         <InventoryMetricCard 
-           label="Estoque Baixo" 
-           value={metrics.lowStockCount.toString()} 
-           icon={AlertTriangle} 
-           color="text-amber-500" 
+         <InventoryMetricCard
+           label="Estoque Baixo"
+           value={metrics.lowStockCount.toString()}
+           icon={AlertTriangle}
+           color="text-[#D6B799]"
          />
          <InventoryMetricCard 
            label="Sem Estoque" 
@@ -147,7 +147,7 @@ export default async function EstoquePage() {
                  <button className="flex-1 py-2 rounded-xl bg-[#304930]/5 text-[#304930] text-[9px] font-black uppercase tracking-widest hover:bg-[#304930] hover:text-white transition-all">
                    Ajustar
                  </button>
-                 <button className="flex-1 py-2 rounded-xl bg-amber-500/10 text-amber-600 text-[9px] font-black uppercase tracking-widest hover:bg-amber-500 hover:text-white transition-all">
+                 <button className="flex-1 py-2 rounded-xl bg-[#D6B799]/10 text-[#D6B799] text-[9px] font-black uppercase tracking-widest hover:bg-[#D6B799] hover:text-white transition-all">
                    Pedir
                  </button>
               </div>

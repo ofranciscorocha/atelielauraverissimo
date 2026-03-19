@@ -29,7 +29,7 @@ export default async function ProducaoPage() {
     switch (status) {
       case 'PREPARO': return 'bg-slate-100 text-slate-600 border-slate-200';
       case 'PINTURA': return 'bg-blue-50 text-blue-600 border-blue-100';
-      case 'SECAGEM': return 'bg-amber-50 text-amber-600 border-amber-100';
+      case 'SECAGEM': return 'bg-[#D6B799]/10 text-[#D6B799] border-[#D6B799]/20';
       case 'FINALIZACAO': return 'bg-purple-50 text-purple-600 border-purple-100';
       case 'EMBALAGEM': return 'bg-emerald-50 text-emerald-600 border-emerald-100';
       default: return 'bg-slate-50 text-slate-400 border-slate-100';
@@ -104,7 +104,7 @@ export default async function ProducaoPage() {
                        </div>
                     </div>
                     {order.specialMessage && (
-                       <div className="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center text-amber-600 border border-amber-100" title="Possui Mensagem Especial">
+                       <div className="w-8 h-8 rounded-full bg-[#D6B799]/10 flex items-center justify-center text-[#D6B799] border border-[#D6B799]/20" title="Possui Mensagem Especial">
                           <Sparkles className="w-4 h-4" />
                        </div>
                     )}

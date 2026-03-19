@@ -21,7 +21,7 @@ export default async function PedidosPage() {
 
   const getStatusColor = (status: OrderStatus) => {
     switch (status) {
-      case 'AGUARDANDO_PAGAMENTO': return 'bg-amber-100 text-amber-700 border-amber-200';
+      case 'AGUARDANDO_PAGAMENTO': return 'bg-[#D6B799]/20 text-[#D6B799] border-[#D6B799]/30';
       case 'PAGO': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
       case 'EM_PRODUCAO': return 'bg-blue-100 text-blue-700 border-blue-200';
       case 'PRONTO_PARA_ENVIO': return 'bg-purple-100 text-purple-700 border-purple-200';
@@ -62,7 +62,7 @@ export default async function PedidosPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-         <StatsMiniCard label="Aguardando Pgto" value={orders.filter(o => o.status === 'AGUARDANDO_PAGAMENTO').length} color="text-amber-500" />
+         <StatsMiniCard label="Aguardando Pgto" value={orders.filter(o => o.status === 'AGUARDANDO_PAGAMENTO').length} color="text-[#D6B799]" />
          <StatsMiniCard label="Em Produção" value={orders.filter(o => o.status === 'EM_PRODUCAO').length} color="text-blue-500" />
          <StatsMiniCard label="Prontos p/ Envio" value={orders.filter(o => o.status === 'PRONTO_PARA_ENVIO').length} color="text-emerald-500" />
          <StatsMiniCard label="Enviados Hoje" value={orders.filter(o => o.status === 'ENVIADO').length} color="text-teal-500" />
@@ -177,18 +177,18 @@ export default async function PedidosPage() {
 
          <div className="titan-card p-8 border-[#304930]/10">
             <div className="flex items-center gap-3 mb-6">
-               <AlertCircle className="w-5 h-5 text-amber-500" />
+               <AlertCircle className="w-5 h-5 text-[#D6B799]" />
                <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#304930]">Alertas de Produção</h3>
             </div>
             <div className="space-y-4">
                {/* Mock alerts or filtering orders with late estimation */}
-               <div className="p-4 bg-amber-50 border border-amber-100 rounded-2xl flex items-center gap-4">
-                  <div className="w-2 h-2 rounded-full bg-amber-500 shadow-lg shadow-amber-500/50" />
+               <div className="p-4 bg-[#D6B799]/10 border border-[#D6B799]/20 rounded-2xl flex items-center gap-4">
+                  <div className="w-2 h-2 rounded-full bg-[#D6B799] shadow-lg shadow-[#D6B799]/50" />
                   <div className="flex-1">
-                     <p className="text-xs font-bold text-amber-900">3 Pedidos próximos ao prazo</p>
-                     <p className="text-[10px] text-amber-900/60 font-medium">Estágio de Pintura requer atenção imediata.</p>
+                     <p className="text-xs font-bold text-[#304930]">3 Pedidos próximos ao prazo</p>
+                     <p className="text-[10px] text-[#304930]/60 font-medium">Estágio de Pintura requer atenção imediata.</p>
                   </div>
-                  <button className="text-[10px] font-black uppercase text-amber-900 px-4 py-2 bg-amber-200/50 rounded-xl">Ver</button>
+                  <button className="text-[10px] font-black uppercase text-[#304930] px-4 py-2 bg-[#D6B799]/30 rounded-xl">Ver</button>
                </div>
                <div className="p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-4">
                   <div className="w-2 h-2 rounded-full bg-rose-500 shadow-lg shadow-rose-500/50" />

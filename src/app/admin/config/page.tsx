@@ -144,9 +144,9 @@ export default async function ConfigPage() {
                </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-amber-50 border border-amber-100 flex gap-4">
-               <Info className="w-5 h-5 text-amber-600 shrink-0" />
-               <p className="text-[11px] text-amber-800 leading-relaxed font-medium">
+            <div className="p-6 rounded-3xl bg-[#D6B799]/10 border border-[#D6B799]/20 flex gap-4">
+               <Info className="w-5 h-5 text-[#D6B799] shrink-0" />
+               <p className="text-[11px] text-[#304930] leading-relaxed font-medium">
                   Algumas configurações de segurança avançada requerem acesso de nível Administrador Master. 
                   Entre em contato com o suporte técnico para alterações no banco de dados.
                </p>

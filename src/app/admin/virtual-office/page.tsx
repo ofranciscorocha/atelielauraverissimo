@@ -72,7 +72,7 @@ export default function VirtualOfficePage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <StatItem label="Agentes Ativos" value={2} total={3} icon={Activity} color="text-emerald-600" />
         <StatItem label="Pinturas em Andamento" value={14} icon={Palette} color="text-[#304930]" />
-        <StatItem label="Aguardando Forno" value={3} icon={Zap} color="text-amber-500" />
+        <StatItem label="Aguardando Forno" value={3} icon={Zap} color="text-[#D6B799]" />
         <StatItem label="Fila de Aprovação" value={2} icon={ShieldCheck} color="text-rose-500" active />
       </div>
 
@@ -95,9 +95,9 @@ export default function VirtualOfficePage() {
                        <div className="p-3 bg-white rounded-2xl group-hover:scale-110 transition-transform shadow-sm">
                           <Bot className="w-6 h-6 text-[#304930]" />
                        </div>
-                       <div className={cn("px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest border", 
+                       <div className={cn("px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-widest border",
                          agent.status === 'WORKING' ? "text-emerald-600 bg-emerald-50 border-emerald-100" :
-                         agent.status === 'IDLE' ? "text-amber-600 bg-amber-50 border-amber-100" :
+                         agent.status === 'IDLE' ? "text-[#D6B799] bg-[#D6B799]/10 border-[#D6B799]/20" :
                          "text-slate-400 bg-slate-50 border-slate-100"
                        )}>
                           {agent.status}
@@ -125,7 +125,7 @@ export default function VirtualOfficePage() {
           {activeTab === 'production' && (
              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 animate-in slide-in-from-right-4 duration-500">
                 <KanbanColumn title="Pintura" color="border-emerald-500" tasks={[{id: '1', title: 'Taça Esmeralda Gold (Set of 6)'}, {id: '2', title: 'Vaso Murano Sunset'}]} />
-                <KanbanColumn title="Secagem/Forno" color="border-amber-500" tasks={[{id: '3', title: 'Centro de Mesa Safira'}]} isProcessing />
+                <KanbanColumn title="Secagem/Forno" color="border-[#D6B799]" tasks={[{id: '3', title: 'Centro de Mesa Safira'}]} isProcessing />
                 <KanbanColumn title="Lapidação" color="border-[#304930]" tasks={[]} />
                 <KanbanColumn title="Pronto / Embalar" color="border-rose-500" tasks={[{id: '4', title: 'Prato Colecionador Cristal'}]} />
              </div>
