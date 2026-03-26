@@ -1,0 +1,238 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden !important;
+  width: 100vw;
+  position: relative;
+}
+
+:root {
+    --background: 120 20% 98%;
+    --foreground: 120 20% 24%;
+    --card: 120 20% 98%;
+    --card-foreground: 120 20% 24%;
+    --popover: 120 20% 98%;
+    --popover-foreground: 120 20% 24%;
+    --primary: 120 21% 24%; /* #304930 Verde Floresta */
+    --primary-foreground: 120 20% 98%;
+    --secondary: 40 52% 54%; /* #C9A84C Dourado Champagne */
+    --secondary-foreground: 120 20% 10%;
+    --muted: 120 10% 93%;
+    --muted-foreground: 120 10% 45%;
+    --accent: 40 52% 54%; /* #C9A84C Dourado Champagne */
+    --accent-foreground: 120 20% 10%;
+    --destructive: 15 60% 50%;
+    --destructive-foreground: 120 20% 98%;
+    --border: 120 10% 90%;
+    --input: 120 10% 90%;
+    --ring: 40 52% 54%;
+    --radius: 2.5rem;
+
+    --mustard: 40 52% 54%; /* #C9A84C Dourado Champagne */
+    --champagne: 40 52% 54%; /* alias */
+    --nude: 30 30% 62%; /* #BC9F82 Nude */
+    --forest: 120 21% 24%;
+    
+    --sidebar-background: 120 20% 18%;
+    --sidebar-foreground: 120 10% 85%;
+    --sidebar-primary: 40 52% 54%;
+    --sidebar-primary-foreground: 120 20% 10%;
+    --sidebar-accent: 120 15% 22%;
+    --sidebar-accent-foreground: 120 10% 85%;
+    --sidebar-border: 120 15% 25%;
+    --sidebar-ring: 40 52% 54%;
+
+    --glass-bg: rgba(248, 250, 248, 0.6);
+    --glass-border: rgba(48, 73, 48, 0.1);
+    --shadow-atelier: 0 10px 40px -10px rgba(48, 73, 48, 0.08);
+  }
+
+  .dark {
+    --background: 120 15% 8%;
+    --foreground: 120 10% 90%;
+    --card: 120 15% 10%;
+    --card-foreground: 120 10% 90%;
+    --popover: 120 15% 10%;
+    --popover-foreground: 120 10% 90%;
+    --primary: 40 52% 54%;
+    --primary-foreground: 120 15% 8%;
+    --secondary: 120 10% 15%;
+    --secondary-foreground: 120 10% 90%;
+    --muted: 120 10% 15%;
+    --muted-foreground: 120 10% 55%;
+    --accent: 40 52% 54%;
+    --accent-foreground: 120 15% 8%;
+    --destructive: 15 60% 40%;
+    --destructive-foreground: 120 10% 90%;
+    --border: 120 10% 18%;
+    --input: 120 10% 18%;
+    --ring: 40 52% 54%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Cormorant Garamond', serif;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply backdrop-blur-xl border rounded-atelier;
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    box-shadow: var(--shadow-atelier);
+  }
+
+  .btn-atelier {
+    @apply rounded-full px-8 py-3 font-sans font-medium uppercase tracking-[0.2em] text-sm
+           transition-all duration-300 ease-out;
+  }
+
+  .btn-primary {
+    @apply btn-atelier bg-primary text-primary-foreground
+           hover:shadow-lg hover:scale-[1.02];
+  }
+
+  .btn-gold {
+    @apply btn-atelier text-white font-black
+           hover:shadow-lg hover:scale-[1.02] shadow-premium border;
+    background-color: hsl(var(--primary));
+    border-color: hsl(var(--primary));
+  }
+
+  .btn-outline-atelier {
+    @apply btn-atelier border-2 border-primary text-primary bg-transparent
+           hover:bg-primary hover:text-primary-foreground;
+  }
+
+  .text-display {
+    font-family: 'Cormorant Garamond', serif;
+    @apply font-light tracking-tight;
+    text-wrap: balance;
+  }
+
+  .gold-accent {
+    @apply font-medium text-gold-gradient inline-block;
+  }
+
+  /* Performance Optimizations */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Optimize scrolling performance for framer-motion */
+  section, div, img {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.1);
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.2);
+  }
+
+  .section-fade-in {
+    @apply opacity-0 translate-y-4;
+    animation: sectionFadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+}
+
+@keyframes sectionFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes brushSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-brush-spin {
+  animation: brushSpin 2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+.gold-accent {
+  color: #C9A84C;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.shadow-premium {
+  box-shadow: 0 10px 30px -10px rgba(48, 73, 48, 0.12), 0 4px 10px -5px rgba(48, 73, 48, 0.05);
+}
+
+.shadow-text {
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+/* =============================================
+   DOURADO CHAMPAGNE — substituição do amarelo
+   #C9A84C → médio | #E8C97A → claro | #A8892A → escuro
+   ============================================= */
+.bg-gold-gradient {
+  background: linear-gradient(135deg, #A8892A 0%, #E8C97A 50%, #C9A84C 100%);
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #A8892A 0%, #E8C97A 45%, #C9A84C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.round-full {
+  border-radius: 9999px;
+}
+
+.gold-icon {
+  stroke: url(#gold-gradient) !important;
+}
+
+.gold-icon-fill {
+  fill: url(#gold-gradient) !important;
+}
+
+.gold-icon-container svg {
+  stroke: url(#gold-gradient) !important;
+}

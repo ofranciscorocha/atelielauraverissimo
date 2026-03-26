@@ -1,218 +1,90 @@
-'use client'
-
-// LAURA VERISSIMO ATELIER - CART PROVIDER
-// Gerenciamento de Carrinho com Local Storage
-
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-
-// ========================================
-// TIPOS & INTERFACES
-// ========================================
+import React, { createContext, useContext, useState, useCallback } from "react";
+import type { Product } from "@/data/products";
 
 export interface CartItem {
-  productId: string
-  productName: string
-  variantId: string
-  variantModel: string
-  variantColor: string
-  variantCapacity: string
-  imageUrl: string
-  quantity: number
-  unitPrice: number
-  subtotal: number
-  sku: string
+  product: Product;
+  quantity: number;
+  customization?: {
+    model: string;
+    color: string;
+    size: string;
+    extras?: string[];
+  };
 }
 
-export interface CartContextType {
-  items: CartItem[]
-  itemCount: number
-  subtotal: number
-  shippingFee: number
-  total: number
-  addItem: (item: Omit<CartItem, 'subtotal'>) => void
-  removeItem: (variantId: string) => void
-  updateQuantity: (variantId: string, quantity: number) => void
-  clearCart: () => void
-  calculateShipping: () => number
+interface CartContextType {
+  items: CartItem[];
+  isOpen: boolean;
+  addItem: (product: Product, quantity?: number, customization?: CartItem['customization']) => void;
+  removeItem: (productId: string, customizationJson?: string) => void;
+  updateQuantity: (productId: string, quantity: number, customizationJson?: string) => void;
+  clearCart: () => void;
+  openCart: () => void;
+  closeCart: () => void;
+  totalItems: number;
+  subtotal: number;
 }
 
-// ========================================
-// CONTEXT
-// ========================================
+const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const CartContext = createContext<CartContextType | undefined>(undefined)
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
 
-export function useCart() {
-  const context = useContext(CartContext)
-  if (!context) {
-    throw new Error('useCart must be used within a CartProvider')
-  }
-  return context
-}
+  const addItem = useCallback((product: Product, quantity: number = 1, customization?: CartItem['customization']) => {
+    setItems((prev) => {
+      const custStr = customization ? JSON.stringify(customization) : undefined;
+      const existing = prev.find((i) => 
+        i.product.id === product.id && 
+        JSON.stringify(i.customization) === custStr
+      );
 
-// ========================================
-// PROVIDER
-// ========================================
-
-interface CartProviderProps {
-  children: ReactNode
-}
-
-export function CartProvider({ children }: CartProviderProps) {
-  const [items, setItems] = useState<CartItem[]>([])
-  const [mounted, setMounted] = useState(false)
-
-  // Hidratar do Local Storage (somente no cliente)
-  useEffect(() => {
-    setMounted(true)
-    const savedCart = localStorage.getItem('laura-atelier-cart')
-    if (savedCart) {
-      try {
-        setItems(JSON.parse(savedCart))
-      } catch (error) {
-        console.error('[CART] Erro ao carregar carrinho:', error)
-      }
-    }
-  }, [])
-
-  // Salvar no Local Storage sempre que mudar
-  useEffect(() => {
-    if (mounted) {
-      localStorage.setItem('laura-atelier-cart', JSON.stringify(items))
-    }
-  }, [items, mounted])
-
-  // ========================================
-  // ADICIONAR ITEM
-  // ========================================
-
-  const addItem = (item: Omit<CartItem, 'subtotal'>) => {
-    setItems((prevItems) => {
-      const existingItem = prevItems.find((i) => i.variantId === item.variantId)
-
-      if (existingItem) {
-        // Atualizar quantidade
-        return prevItems.map((i) =>
-          i.variantId === item.variantId
-            ? {
-                ...i,
-                quantity: i.quantity + item.quantity,
-                subtotal: (i.quantity + item.quantity) * i.unitPrice,
-              }
+      if (existing) {
+        return prev.map((i) =>
+          (i.product.id === product.id && JSON.stringify(i.customization) === custStr)
+            ? { ...i, quantity: i.quantity + quantity } 
             : i
-        )
+        );
       }
+      return [...prev, { product, quantity, customization }];
+    });
+    setIsOpen(true);
+  }, []);
 
-      // Adicionar novo item
-      return [
-        ...prevItems,
-        {
-          ...item,
-          subtotal: item.quantity * item.unitPrice,
-        },
-      ]
-    })
-  }
+  const removeItem = useCallback((productId: string, customizationJson?: string) => {
+    setItems((prev) => prev.filter((i) => 
+      !(i.product.id === productId && JSON.stringify(i.customization) === customizationJson)
+    ));
+  }, []);
 
-  // ========================================
-  // REMOVER ITEM
-  // ========================================
-
-  const removeItem = (variantId: string) => {
-    setItems((prevItems) => prevItems.filter((i) => i.variantId !== variantId))
-  }
-
-  // ========================================
-  // ATUALIZAR QUANTIDADE
-  // ========================================
-
-  const updateQuantity = (variantId: string, quantity: number) => {
+  const updateQuantity = useCallback((productId: string, quantity: number, customizationJson?: string) => {
     if (quantity <= 0) {
-      removeItem(variantId)
-      return
+      removeItem(productId, customizationJson);
+      return;
     }
+    setItems((prev) =>
+      prev.map((i) => (i.product.id === productId && JSON.stringify(i.customization) === customizationJson ? { ...i, quantity } : i))
+    );
+  }, [removeItem]);
 
-    setItems((prevItems) =>
-      prevItems.map((i) =>
-        i.variantId === variantId
-          ? {
-              ...i,
-              quantity,
-              subtotal: quantity * i.unitPrice,
-            }
-          : i
-      )
-    )
-  }
+  const clearCart = useCallback(() => setItems([]), []);
+  const openCart = useCallback(() => setIsOpen(true), []);
+  const closeCart = useCallback(() => setIsOpen(false), []);
 
-  // ========================================
-  // LIMPAR CARRINHO
-  // ========================================
-
-  const clearCart = () => {
-    setItems([])
-  }
-
-  // ========================================
-  // CALCULAR FRETE (Simplificado - fixo por enquanto)
-  // ========================================
-
-  const calculateShipping = () => {
-    // Frete fixo de R$ 25,00 por enquanto
-    // Pode ser expandido para calcular por CEP no futuro
-    return items.length > 0 ? 25.0 : 0
-  }
-
-  // ========================================
-  // MÉTRICAS DO CARRINHO
-  // ========================================
-
-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
-  const subtotal = items.reduce((sum, item) => sum + item.subtotal, 0)
-  const shippingFee = calculateShipping()
-  const total = subtotal + shippingFee
-
-  // ========================================
-  // EVITAR HYDRATION MISMATCH
-  // ========================================
-
-  if (!mounted) {
-    return (
-      <CartContext.Provider
-        value={{
-          items: [],
-          itemCount: 0,
-          subtotal: 0,
-          shippingFee: 0,
-          total: 0,
-          addItem: () => {},
-          removeItem: () => {},
-          updateQuantity: () => {},
-          clearCart: () => {},
-          calculateShipping: () => 0,
-        }}
-      >
-        {children}
-      </CartContext.Provider>
-    )
-  }
+  const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
+  const subtotal = items.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
 
   return (
     <CartContext.Provider
-      value={{
-        items,
-        itemCount,
-        subtotal,
-        shippingFee,
-        total,
-        addItem,
-        removeItem,
-        updateQuantity,
-        clearCart,
-        calculateShipping,
-      }}
+      value={{ items, isOpen, addItem, removeItem, updateQuantity, clearCart, openCart, closeCart, totalItems, subtotal }}
     >
       {children}
     </CartContext.Provider>
-  )
-}
+  );
+};
+
+export const useCart = () => {
+  const ctx = useContext(CartContext);
+  if (!ctx) throw new Error("useCart must be inside CartProvider");
+  return ctx;
+};

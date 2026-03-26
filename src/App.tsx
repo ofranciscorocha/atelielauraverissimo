@@ -1,0 +1,74 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { CartProvider } from "@/contexts/CartContext";
+import { ProductProvider } from "@/contexts/ProductContext";
+import { lazy, Suspense } from "react";
+import Index from "./pages/Index.tsx";
+import Checkout from "./pages/Checkout.tsx";
+const Admin = lazy(() => import("./pages/Admin.tsx"));
+import ProductDetails from "./pages/ProductDetails.tsx";
+import WelcomePopup from "./components/WelcomePopup";
+import Profile from "./pages/Profile.tsx";
+import NotFound from "./pages/NotFound.tsx";
+import Customizer from "./pages/Customizer.tsx";
+import PaymentSuccess from "./pages/PaymentSuccess.tsx";
+import PaymentPending from "./pages/PaymentPending.tsx";
+import PaymentFailure from "./pages/PaymentFailure.tsx";
+
+const queryClient = new QueryClient();
+
+const BrandGradientSVG = () => (
+  <svg width="0" height="0" className="absolute pointer-events-none opacity-0" aria-hidden="true">
+    <defs>
+      <linearGradient id="gold-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#E1AD01" />
+        <stop offset="50%" stopColor="#FFDB58" />
+        <stop offset="100%" stopColor="#C49102" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <BrandGradientSVG />
+    <TooltipProvider>
+      <ProductProvider>
+        <CartProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <WelcomePopup />
+            <Suspense fallback={
+              <div className="min-h-screen bg-[#fdfaf6] flex items-center justify-center">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="w-16 h-16 border-4 border-primary/10 border-t-primary rounded-full animate-spin" />
+                  <p className="font-display italic text-primary animate-pulse">Ateliê Laura Veríssimo...</p>
+                </div>
+              </div>
+            }>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/product/custom-order" element={<Navigate to="/personalizar" replace />} />
+                <Route path="/product/:id" element={<ProductDetails />} />
+                <Route path="/personalizar" element={<Customizer />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/payment/success" element={<PaymentSuccess />} />
+                <Route path="/payment/pending" element={<PaymentPending />} />
+                <Route path="/payment/failure" element={<PaymentFailure />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </BrowserRouter>
+        </CartProvider>
+      </ProductProvider>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
+
+export default App;
